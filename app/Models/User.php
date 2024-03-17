@@ -51,4 +51,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function scopeAdmin()
+    {
+        return $this->where('current_role', 'ADMIN');
+    }
 }
