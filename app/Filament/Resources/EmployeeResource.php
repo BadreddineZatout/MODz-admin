@@ -16,7 +16,7 @@ class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
@@ -57,6 +57,7 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('last_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('profile.user.email')
+                    ->label('Email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
@@ -78,7 +79,7 @@ class EmployeeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -100,6 +101,20 @@ class EmployeeResource extends Resource
                 ->copyable()
                 ->copyMessage('Copied!')
                 ->copyMessageDuration(1500),
+            Infolists\Components\TextEntry::make('state.name'),
+            Infolists\Components\TextEntry::make('province.name'),
+            Infolists\Components\TextEntry::make('category.profession')
+                ->label('Profession'),
+            Infolists\Components\IconEntry::make('is_active')
+                ->boolean()
+                ->label('Active State'),
+            Infolists\Components\TextEntry::make('status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'PENDING' => 'gray',
+                    'VALID' => 'success',
+                    'REFUSED' => 'danger',
+                }),
         ]);
     }
 
@@ -107,9 +122,7 @@ class EmployeeResource extends Resource
     {
         return [
             'index' => Pages\ListEmployees::route('/'),
-            'create' => Pages\CreateEmployee::route('/create'),
             'view' => Pages\ViewEmployee::route('/{record}'),
-            'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
     }
 }

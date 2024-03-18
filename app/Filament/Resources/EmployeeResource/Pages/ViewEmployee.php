@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\EmployeeResource\Pages;
 
 use App\Filament\Resources\EmployeeResource;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewEmployee extends ViewRecord
@@ -13,7 +14,34 @@ class ViewEmployee extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Action::make('Validate Employee')
+                ->color('success')
+                ->icon('heroicon-o-check-circle')
+                ->hidden(fn () => $this->record->status == 'VALID')
+                ->action(function () {
+                    $this->record->status = 'VALID';
+                    $this->record->save();
+
+                    return Notification::make()
+                        ->title('Employee is Validated')
+                        ->success()
+                        ->send();
+                })
+                ->requiresConfirmation(),
+            Action::make('Refuse Employee')
+                ->color('danger')
+                ->icon('heroicon-m-x-circle')
+                ->hidden(fn () => $this->record->status == 'REFUSED')
+                ->action(function () {
+                    $this->record->status = 'REFUSED';
+                    $this->record->save();
+
+                    return Notification::make()
+                        ->title('Employee is Refused')
+                        ->danger()
+                        ->send();
+                })
+                ->requiresConfirmation(),
         ];
     }
 }
