@@ -11,6 +11,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class EmployeeResource extends Resource
 {
@@ -115,6 +116,26 @@ class EmployeeResource extends Resource
                     'VALID' => 'success',
                     'REFUSED' => 'danger',
                 }),
+            Infolists\Components\Section::make('Validation Media')
+                ->schema([
+                    Infolists\Components\ImageEntry::make('Selfie')
+                        ->state(function (Model $record) {
+                            return $record->getSelfie();
+                        })->size(500)
+                        ->extraImgAttributes([
+                            'alt' => 'Selfie image not found!',
+                            'loading' => 'lazy',
+                        ]),
+                    Infolists\Components\ImageEntry::make('ID')
+                        ->label('ID Card')
+                        ->state(function (Model $record) {
+                            return $record->getID();
+                        })->size(500)
+                        ->extraImgAttributes([
+                            'alt' => 'ID card image not found!',
+                            'loading' => 'lazy',
+                        ]),
+                ])->columns(2),
         ]);
     }
 

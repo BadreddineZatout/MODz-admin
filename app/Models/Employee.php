@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
@@ -34,5 +35,30 @@ class Employee extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function media(): BelongsToMany
+    {
+        return $this->belongsToMany(Media::class, '_employeetomedia', 'A', 'B');
+    }
+
+    public function getID(): string
+    {
+        $selfie = $this->media()->where('type', 'ID')->first();
+        if (! $selfie) {
+            return '';
+        }
+
+        return env('API_URL').'/'.$selfie->path;
+    }
+
+    public function getSelfie(): string
+    {
+        $selfie = $this->media()->where('type', 'SELFIE')->first();
+        if (! $selfie) {
+            return '';
+        }
+
+        return env('API_URL').'/'.$selfie->path;
     }
 }
