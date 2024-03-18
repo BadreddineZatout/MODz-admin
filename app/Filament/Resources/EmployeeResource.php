@@ -10,6 +10,9 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -64,7 +67,8 @@ class EmployeeResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('state.name'),
                 Tables\Columns\TextColumn::make('province.name'),
-                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('category.profession')
+                    ->label('Profession'),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('status')
@@ -76,8 +80,21 @@ class EmployeeResource extends Resource
                     }),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('state')
+                    ->relationship('state', 'name')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('category')
+                    ->relationship('category', 'profession'),
+                TernaryFilter::make('is_active'),
+                SelectFilter::make('status')
+                    ->options([
+                        'PENDING' => 'Pending',
+                        'VALID' => 'Valid',
+                        'REFUSED' => 'Refused',
+                    ]),
+            ], layout: FiltersLayout::Modal)
+            ->filtersFormColumns(2)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
