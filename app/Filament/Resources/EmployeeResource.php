@@ -139,21 +139,35 @@ class EmployeeResource extends Resource
                     'VALID' => 'success',
                     'REFUSED' => 'danger',
                 }),
-            Infolists\Components\Section::make('Validation Media')
+            Infolists\Components\Section::make('Selfie Image')
                 ->schema([
                     Infolists\Components\ImageEntry::make('Selfie')
                         ->state(function (Model $record) {
                             return $record->getSelfie();
-                        })->size(500)
+                        })
                         ->extraImgAttributes([
                             'alt' => 'Selfie image not found!',
+                            'loading' => 'lazy',
+                        ]),
+
+                ]),
+            Infolists\Components\Section::make('National ID Images')
+                ->schema([
+
+                    Infolists\Components\ImageEntry::make('ID')
+                        ->label('ID Card')
+                        ->state(function (Model $record) {
+                            return $record->getID();
+                        })->height(300)->width(500)
+                        ->extraImgAttributes([
+                            'alt' => 'ID card image not found!',
                             'loading' => 'lazy',
                         ]),
                     Infolists\Components\ImageEntry::make('ID')
                         ->label('ID Card')
                         ->state(function (Model $record) {
-                            return $record->getID();
-                        })->size(500)
+                            return $record->getID(1);
+                        })->height(300)->width(500)
                         ->extraImgAttributes([
                             'alt' => 'ID card image not found!',
                             'loading' => 'lazy',

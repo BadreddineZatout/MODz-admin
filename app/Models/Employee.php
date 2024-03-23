@@ -42,14 +42,14 @@ class Employee extends Model
         return $this->belongsToMany(Media::class, '_employeetomedia', 'A', 'B');
     }
 
-    public function getID(): string
+    public function getID($order = 0): string
     {
-        $selfie = $this->media()->where('type', 'ID')->first();
-        if (! $selfie) {
+        $ids = $this->media()->where('type', 'ID')->get();
+        if (! $ids) {
             return '';
         }
 
-        return env('API_URL').'/'.$selfie->path;
+        return env('API_URL').'/'.$ids[$order]->path;
     }
 
     public function getSelfie(): string
