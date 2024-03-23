@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'phone', 'state_id', 'province_id', 'category_id', 'is_active', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'state_id', 'province_id', 'category_id', 'is_active', 'status'];
 
     /**
      * Indicates if the model should be timestamped.
