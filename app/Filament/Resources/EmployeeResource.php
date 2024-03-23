@@ -36,6 +36,9 @@ class EmployeeResource extends Resource
                     ->tel()
                     ->required()
                     ->maxLength(191),
+                Forms\Components\TextInput::make('national_id')
+                    ->required()
+                    ->maxLength(191),
                 Forms\Components\TextInput::make('state_id')
                     ->required()
                     ->numeric(),
@@ -64,6 +67,8 @@ class EmployeeResource extends Resource
                     ->label('Email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('national_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('state.name'),
                 Tables\Columns\TextColumn::make('province.name'),
@@ -115,6 +120,7 @@ class EmployeeResource extends Resource
                 ->copyable()
                 ->copyMessage('Copied!')
                 ->copyMessageDuration(1500),
+            Infolists\Components\TextEntry::make('national_id'),
             Infolists\Components\TextEntry::make('profile.user.email')
                 ->copyable()
                 ->copyMessage('Copied!')
