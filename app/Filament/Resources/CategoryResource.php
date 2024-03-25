@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,6 +30,11 @@ class CategoryResource extends Resource
                 Forms\Components\TextInput::make('description')
                     ->required()
                     ->maxLength(191),
+                SpatieMediaLibraryFileUpload::make('image')
+                    ->multiple()
+                    ->disk(env('STORAGE_DISK'))
+                    ->preserveFilenames()
+                    ->rules(['image', 'mimes:jpeg,png,jpg']),
             ]);
     }
 
