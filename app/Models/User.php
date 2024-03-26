@@ -55,7 +55,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function scopeAdmin()
     {
-        return $this->where('current_role', 'ADMIN');
+        return $this->where('current_role', 'ADMIN')->orWhereNull('current_role');
     }
 
     public function canAccessPanel(Panel $panel): bool

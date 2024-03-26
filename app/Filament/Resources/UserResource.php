@@ -48,7 +48,8 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('current_role'),
+                Tables\Columns\TextColumn::make('current_role')
+                    ->default('--'),
             ])
             ->modifyQueryUsing(fn (Builder $query) => $query->admin())
             ->actions([
