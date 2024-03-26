@@ -10,6 +10,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class ClientResource extends Resource
@@ -48,6 +49,21 @@ class ClientResource extends Resource
                 Tables\Columns\TextColumn::make('profile.user.email')
                     ->searchable()
                     ->label('Email'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'PENDING' => 'gray',
+                        'VALID' => 'success',
+                        'REFUSED' => 'danger',
+                    }),
+            ])
+            ->filters([
+                SelectFilter::make('status')
+                    ->options([
+                        'PENDING' => 'Pending',
+                        'VALID' => 'Valid',
+                        'REFUSED' => 'Refused',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -73,6 +89,13 @@ class ClientResource extends Resource
                 ->copyable()
                 ->copyMessage('Copied!')
                 ->copyMessageDuration(1500),
+            Infolists\Components\TextEntry::make('status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'PENDING' => 'gray',
+                    'VALID' => 'success',
+                    'REFUSED' => 'danger',
+                }),
         ]);
     }
 

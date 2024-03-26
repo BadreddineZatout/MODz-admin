@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Client extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'phone'];
+    protected $fillable = ['first_name', 'last_name', 'phone', 'Status'];
 
     /**
      * Indicates if the model should be timestamped.

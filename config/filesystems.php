@@ -39,14 +39,14 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL') . '/storage',
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
 
         'public_admin' => [
             'driver' => 'local',
-            'root' => BASE_DIR . '/public_admin/storage',
+            'root' => BASE_DIR.'/public_admin/storage',
             'url' => '/storage',
             'visibility' => 'public',
         ],
