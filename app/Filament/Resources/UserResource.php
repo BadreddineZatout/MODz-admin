@@ -45,6 +45,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->default('--')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
