@@ -44,6 +44,8 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('#'),
                 Tables\Columns\TextColumn::make('name')
                     ->default('--')
                     ->searchable(),
@@ -53,6 +55,7 @@ class UserResource extends Resource
                     ->default('--'),
             ])
             ->modifyQueryUsing(fn (Builder $query) => $query->admin())
+            ->defaultSort('id', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
