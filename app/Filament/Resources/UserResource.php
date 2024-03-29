@@ -8,6 +8,8 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
@@ -54,8 +56,25 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('current_role')
                     ->default('--'),
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->admin())
             ->defaultSort('id', 'desc')
+            ->filters([
+                SelectFilter::make('current_role')
+                    ->options([
+                        'ADMIN' => 'Admin',
+                        'CLIENT' => 'Client',
+                        'EMPLOYEE' => 'Employee',
+                    ]),
+                TernaryFilter::make('profile')
+                    ->label('Profiles')
+                    ->placeholder('All users')
+                    ->trueLabel('Users With Profiles')
+                    ->falseLabel('Users Without Profiles')
+                    ->queries(
+                        true: fn (Builder $query) => $query->whereNotNull('current_role'),
+                        false: fn (Builder $query) => $query->whereNull('current_role'),
+                        blank: fn (Builder $query) => $query,
+                    ),
+            ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

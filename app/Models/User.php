@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,11 +51,6 @@ class User extends Authenticatable implements FilamentUser
         return [
             'password' => 'hashed',
         ];
-    }
-
-    public function scopeAdmin(Builder $query)
-    {
-        return $query->where('current_role', 'ADMIN')->orWhereNull('current_role');
     }
 
     public function canAccessPanel(Panel $panel): bool
