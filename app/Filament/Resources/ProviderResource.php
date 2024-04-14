@@ -7,6 +7,8 @@ use App\Models\Provider;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -60,9 +62,9 @@ class ProviderResource extends Resource
                     ->default('---'),
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('province.name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('state.name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('province.name')
                     ->searchable(),
             ])
             ->actions([
@@ -75,6 +77,20 @@ class ProviderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            Infolists\Components\TextEntry::make('shop_name'),
+            Infolists\Components\TextEntry::make('phone_number'),
+            Infolists\Components\TextEntry::make('phone_number2')
+                ->default('---'),
+            Infolists\Components\TextEntry::make('category.name'),
+            Infolists\Components\TextEntry::make('state.name'),
+            Infolists\Components\TextEntry::make('province.name'),
+
+        ]);
     }
 
     public static function getPages(): array
