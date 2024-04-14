@@ -27,9 +27,10 @@ class CategoryResource extends Resource
                 Forms\Components\TextInput::make('profession')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('description')
+                Forms\Components\Textarea::make('description')
                     ->required()
                     ->maxLength(191),
+                Forms\Components\Toggle::make('urgent'),
                 SpatieMediaLibraryFileUpload::make('image')
                     ->multiple()
                     ->disk(env('STORAGE_DISK'))
@@ -46,8 +47,7 @@ class CategoryResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('profession')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
+                Tables\Columns\IconColumn::make('urgent')->boolean(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
