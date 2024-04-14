@@ -53,7 +53,7 @@ class JobTypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ItemsRelationManager::class
+            ItemsRelationManager::class,
         ];
     }
 
