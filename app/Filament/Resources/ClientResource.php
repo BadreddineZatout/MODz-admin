@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClientResource\Pages;
+use App\Filament\Resources\ClientResource\RelationManagers\OrdersRelationManager;
 use App\Models\Client;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -97,6 +98,13 @@ class ClientResource extends Resource
                     'REFUSED' => 'danger',
                 }),
         ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            OrdersRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
