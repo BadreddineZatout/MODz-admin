@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
@@ -42,6 +44,11 @@ class Employee extends Model
         return $this->belongsToMany(Media::class, '_employeetomedia', 'A', 'B');
     }
 
+    public function offers(): HasMany
+    {
+        return $this->hasMany(Offer::class);
+    }
+
     public function getID($order = 0): string
     {
         $ids = $this->media()->where('type', 'ID')->get();
@@ -60,5 +67,12 @@ class Employee extends Model
         }
 
         return env('API_URL').'/'.$selfie->path;
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => "{$this->first_name} {$this->last_name}",
+        );
     }
 }
