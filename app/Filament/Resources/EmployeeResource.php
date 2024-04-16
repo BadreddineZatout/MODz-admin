@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
 use App\Models\Employee;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -62,9 +63,6 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('first_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('profile.user.email')
-                    ->label('Email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
@@ -174,6 +172,13 @@ class EmployeeResource extends Resource
                         ]),
                 ])->columns(2),
         ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            OffersRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
