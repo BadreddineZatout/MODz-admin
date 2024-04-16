@@ -41,7 +41,7 @@ class Employee extends Model
 
     public function media(): BelongsToMany
     {
-        return $this->belongsToMany(Media::class, '_employeetomedia', 'A', 'B');
+        return $this->belongsToMany(Image::class, '_employeetoimage', 'A', 'B');
     }
 
     public function offers(): HasMany
@@ -52,7 +52,7 @@ class Employee extends Model
     public function getID($order = 0): string
     {
         $ids = $this->media()->where('type', 'ID')->get();
-        if (! $ids) {
+        if (! $ids->count()) {
             return '';
         }
 

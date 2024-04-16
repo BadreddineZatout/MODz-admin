@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\OrderResource\RelationManagers;
+namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
@@ -15,7 +15,8 @@ class OffersRelationManager extends RelationManager
     public function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Infolists\Components\TextEntry::make('employee.name'),
+            Infolists\Components\TextEntry::make('order.client.name')
+                ->label('Client'),
             Infolists\Components\TextEntry::make('price'),
             Infolists\Components\IconEntry::make('can_travel')
                 ->boolean(),
@@ -36,7 +37,8 @@ class OffersRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('employee.name')
+                Tables\Columns\TextColumn::make('order.client.name')
+                    ->label('Client')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->numeric()

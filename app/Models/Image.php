@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Media extends Model
+class Image extends Model
 {
-    protected $table = 'media';
-
     protected $fillable = ['name', 'path', 'type'];
 
     public $timestamps = false;
