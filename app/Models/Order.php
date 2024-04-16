@@ -6,11 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Item extends Model
+class Order extends Model
 {
-    protected $fillable = ['name', 'category_id', 'job_type_id', 'min_price', 'max_price'];
+    protected $fillable = ['client_id', 'description', 'date', 'hour', 'category_id', 'job_type_id', 'status', 'is_urgent'];
+
+    protected $casts = [
+        'is_urgent' => 'boolean',
+    ];
 
     public $timestamps = false;
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
 
     public function category(): BelongsTo
     {
@@ -22,8 +31,8 @@ class Item extends Model
         return $this->belongsTo(JobType::class);
     }
 
-    public function orders(): BelongsToMany
+    public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Order::class)->withPivot(['quantity']);
+        return $this->belongsToMany(Item::class)->withPivot(['quantity']);
     }
 }
