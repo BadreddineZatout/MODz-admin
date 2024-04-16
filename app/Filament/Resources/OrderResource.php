@@ -6,6 +6,8 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -85,12 +87,35 @@ class OrderResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            Infolists\Components\TextEntry::make('client.name'),
+            Infolists\Components\TextEntry::make('date')
+                ->date('Y-m-d'),
+            Infolists\Components\TextEntry::make('hour'),
+            Infolists\Components\TextEntry::make('category.name'),
+            Infolists\Components\TextEntry::make('jobType.name'),
+            Infolists\Components\TextEntry::make('status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'PENDING' => 'gray',
+                    'PROCESSING' => 'warning',
+                    'DONE' => 'success',
+                    'CANCELLED' => 'danger',
+                }),
+            Infolists\Components\IconEntry::make('is_urgent')
+                ->boolean(),
+        ]);
     }
 
     public static function getRelations(): array
