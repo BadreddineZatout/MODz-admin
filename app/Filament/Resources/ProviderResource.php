@@ -11,6 +11,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -19,6 +20,8 @@ class ProviderResource extends Resource
     protected static ?string $model = Provider::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+
+    protected static ?string $recordTitleAttribute = 'shop_name';
 
     public static function form(Form $form): Form
     {
@@ -66,6 +69,12 @@ class ProviderResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('province.name')
                     ->searchable(),
+            ])
+            ->filters([
+                SelectFilter::make('state')
+                    ->relationship('state', 'name'),
+                SelectFilter::make('category')
+                    ->relationship('category', 'name'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

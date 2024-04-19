@@ -10,6 +10,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class CategoryResource extends Resource
@@ -49,6 +50,9 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('profession')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('urgent')->boolean(),
+            ])
+            ->filters([
+                TernaryFilter::make('urgent'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

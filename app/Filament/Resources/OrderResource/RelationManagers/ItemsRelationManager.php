@@ -7,6 +7,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\AttachAction;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -52,6 +53,28 @@ class ItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('quantity'),
                 Tables\Columns\TextColumn::make('min_price')->suffix(' DA'),
                 Tables\Columns\TextColumn::make('max_price')->suffix(' DA'),
+            ])
+            ->filters([
+                Filter::make('Price')
+                    ->form([
+                        Forms\Components\TextInput::make('min_price')
+                            ->suffix('DA')
+                            ->numeric(),
+                        Forms\Components\TextInput::make('max_price')
+                            ->suffix('DA')
+                            ->numeric(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['min_price'],
+                                fn (Builder $query, $min_price): Builder => $query->where('min_price', $min_price),
+                            )
+                            ->when(
+                                $data['max_price'],
+                                fn (Builder $query, $max_price): Builder => $query->where('max_price', $max_price),
+                            );
+                    }),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()

@@ -6,7 +6,10 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class ItemsRelationManager extends RelationManager
@@ -50,6 +53,30 @@ class ItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('category.name'),
                 Tables\Columns\TextColumn::make('min_price')->suffix(' DA'),
                 Tables\Columns\TextColumn::make('max_price')->suffix(' DA'),
+            ])
+            ->filters([
+                SelectFilter::make('category')
+                    ->relationship('category', 'name'),
+                Filter::make('Price')
+                    ->form([
+                        Forms\Components\TextInput::make('min_price')
+                            ->suffix('DA')
+                            ->numeric(),
+                        Forms\Components\TextInput::make('max_price')
+                            ->suffix('DA')
+                            ->numeric(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['min_price'],
+                                fn (Builder $query, $min_price): Builder => $query->where('min_price', $min_price),
+                            )
+                            ->when(
+                                $data['max_price'],
+                                fn (Builder $query, $max_price): Builder => $query->where('max_price', $max_price),
+                            );
+                    }),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

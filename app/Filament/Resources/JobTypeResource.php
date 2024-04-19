@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class JobTypeResource extends Resource
@@ -37,6 +38,9 @@ class JobTypeResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('has_items')
                     ->boolean(),
+            ])
+            ->filters([
+                TernaryFilter::make('has_items'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
