@@ -2,26 +2,39 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeeResource\Pages;
-use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
-use App\Models\Employee;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Tables;
 use Filament\Infolists;
+use App\Models\Employee;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Support\Htmlable;
+use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
 
 class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    protected static ?string $recordTitleAttribute = 'first_name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['first_name', 'last_name'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
+    {
+        return "$record->first_name $record->last_name";
+    }
 
     public static function form(Form $form): Form
     {
