@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class JobTypesRelationManager extends RelationManager
@@ -35,6 +36,9 @@ class JobTypesRelationManager extends RelationManager
                     ->searchable(),
                 Tables\Columns\IconColumn::make('has_items')
                     ->boolean(),
+            ])
+            ->filters([
+                TernaryFilter::make('has_items'),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
