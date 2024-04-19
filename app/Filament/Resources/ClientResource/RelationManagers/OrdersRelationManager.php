@@ -3,10 +3,16 @@
 namespace App\Filament\Resources\ClientResource\RelationManagers;
 
 use App\Models\Order;
+use Filament\Forms\Components\DatePicker;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrdersRelationManager extends RelationManager
 {
@@ -38,6 +44,33 @@ class OrdersRelationManager extends RelationManager
                 Tables\Columns\IconColumn::make('is_urgent')
                     ->boolean(),
             ])
+            ->filters([
+                Filter::make('date')
+                    ->form([
+                        DatePicker::make('date'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['date'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('date', $date),
+                            );
+                    }),
+                SelectFilter::make('category')
+                    ->relationship('category', 'name'),
+                SelectFilter::make('jobType')
+                    ->relationship('jobType', 'name'),
+                SelectFilter::make('status')
+                    ->options([
+                        'PENDING' => 'Pending',
+                        'PROCESSING' => 'Processing',
+                        'DONE' => 'Done',
+                        'CANCELLED' => 'Cancelled',
+                    ]),
+                TernaryFilter::make('is_urgent'),
+
+            ], layout: FiltersLayout::Modal)
+            ->filtersFormColumns(2)
             ->actions([
                 Action::make('View')
                     ->icon('heroicon-m-eye')

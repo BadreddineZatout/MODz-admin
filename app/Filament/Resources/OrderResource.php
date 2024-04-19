@@ -7,12 +7,18 @@ use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\OrderResource\RelationManagers\OffersRelationManager;
 use App\Models\Order;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderResource extends Resource
@@ -62,9 +68,9 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('client.name')
-                    ->searchable(),
+                    ->searchable(['first_name', 'last_name']),
                 Tables\Columns\TextColumn::make('date')
-                    ->date()
+                    ->date('d-m-Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hour')
                     ->searchable(),
@@ -84,8 +90,32 @@ class OrderResource extends Resource
                     ->boolean(),
             ])
             ->filters([
-                //
-            ])
+                Filter::make('date')
+                    ->form([
+                        DatePicker::make('date'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['date'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('date', $date),
+                            );
+                    }),
+                SelectFilter::make('category')
+                    ->relationship('category', 'name'),
+                SelectFilter::make('jobType')
+                    ->relationship('jobType', 'name'),
+                SelectFilter::make('status')
+                    ->options([
+                        'PENDING' => 'Pending',
+                        'PROCESSING' => 'Processing',
+                        'DONE' => 'Done',
+                        'CANCELLED' => 'Cancelled',
+                    ]),
+                TernaryFilter::make('is_urgent'),
+
+            ], layout: FiltersLayout::Modal)
+            ->filtersFormColumns(2)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
