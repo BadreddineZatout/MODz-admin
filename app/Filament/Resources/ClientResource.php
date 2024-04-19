@@ -29,7 +29,7 @@ class ClientResource extends Resource
         return ['first_name', 'last_name'];
     }
 
-    public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
+    public static function getGlobalSearchResultTitle(Model $record): string|Htmlable
     {
         return "$record->first_name $record->last_name";
     }

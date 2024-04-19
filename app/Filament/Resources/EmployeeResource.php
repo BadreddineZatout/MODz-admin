@@ -2,21 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Infolists;
+use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
 use App\Models\Employee;
+use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
+use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
-use App\Filament\Resources\EmployeeResource\Pages;
-use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
+use Illuminate\Database\Eloquent\Model;
 
 class EmployeeResource extends Resource
 {
@@ -31,7 +31,7 @@ class EmployeeResource extends Resource
         return ['first_name', 'last_name'];
     }
 
-    public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
+    public static function getGlobalSearchResultTitle(Model $record): string|Htmlable
     {
         return "$record->first_name $record->last_name";
     }

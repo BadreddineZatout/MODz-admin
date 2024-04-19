@@ -20,6 +20,8 @@ class ProviderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
+    protected static ?string $recordTitleAttribute = 'shop_name';
+
     public static function form(Form $form): Form
     {
         return $form
