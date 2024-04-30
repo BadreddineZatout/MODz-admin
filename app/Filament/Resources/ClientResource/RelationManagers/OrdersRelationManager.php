@@ -43,6 +43,17 @@ class OrdersRelationManager extends RelationManager
                     }),
                 Tables\Columns\IconColumn::make('is_urgent')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('accepted_at')
+                    ->date('d-m-Y')
+                    ->sortable()
+                    ->default('---')
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+                Tables\Columns\TextColumn::make('employee.name')
+                    ->searchable(['first_name', 'last_name'])
+                    ->default('---')
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
             ])
             ->filters([
                 Filter::make('date')

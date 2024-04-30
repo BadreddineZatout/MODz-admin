@@ -38,6 +38,7 @@ class OrderResource extends Resource
                     ->searchable(['first_name', 'last_name'])
                     ->required(),
                 Forms\Components\DatePicker::make('date')
+                    ->displayFormat('d/m/Y')
                     ->required(),
                 Forms\Components\TimePicker::make('hour')
                     ->required(),
@@ -60,6 +61,13 @@ class OrderResource extends Resource
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
+                Forms\Components\DatePicker::make('accepted_at')
+                    ->displayFormat('d/m/Y'),
+                Forms\Components\Select::make('employee_id')
+                    ->relationship('employee')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                    ->preload()
+                    ->searchable(['first_name', 'last_name']),
             ]);
     }
 
@@ -88,6 +96,17 @@ class OrderResource extends Resource
                     }),
                 Tables\Columns\IconColumn::make('is_urgent')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('accepted_at')
+                    ->date('d-m-Y')
+                    ->sortable()
+                    ->default('---')
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+                Tables\Columns\TextColumn::make('employee.name')
+                    ->searchable(['first_name', 'last_name'])
+                    ->default('---')
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
             ])
             ->filters([
                 Filter::make('date')
@@ -133,7 +152,7 @@ class OrderResource extends Resource
         return $infolist->schema([
             Infolists\Components\TextEntry::make('client.name'),
             Infolists\Components\TextEntry::make('date')
-                ->date('Y-m-d'),
+                ->date('d-m-Y'),
             Infolists\Components\TextEntry::make('hour'),
             Infolists\Components\TextEntry::make('category.name'),
             Infolists\Components\TextEntry::make('jobType.name'),
@@ -147,6 +166,11 @@ class OrderResource extends Resource
                 }),
             Infolists\Components\IconEntry::make('is_urgent')
                 ->boolean(),
+            Infolists\Components\TextEntry::make('accepted_at')
+                ->date('d-m-Y')
+                ->default('---'),
+            Infolists\Components\TextEntry::make('employee.name')
+                ->default('---'),
         ]);
     }
 
