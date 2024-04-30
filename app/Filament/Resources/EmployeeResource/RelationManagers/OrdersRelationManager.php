@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ClientResource\RelationManagers;
+namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 
 use App\Models\Order;
 use Filament\Forms\Components\DatePicker;
@@ -24,6 +24,8 @@ class OrdersRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('client.name')
+                    ->searchable(['first_name', 'last_name']),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),

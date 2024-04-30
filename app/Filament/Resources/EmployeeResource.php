@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManager;
 use App\Models\Employee;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -191,6 +192,7 @@ class EmployeeResource extends Resource
     {
         return [
             OffersRelationManager::class,
+            OrdersRelationManager::class,
         ];
     }
 
