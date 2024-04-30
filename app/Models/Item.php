@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Item extends Model
 {
-    protected $fillable = ['name', 'category_id', 'job_type_id', 'min_price', 'max_price'];
+    protected $fillable = ['name', 'category_id', 'job_type_id', 'min_price', 'max_price', 'unit'];
 
     public $timestamps = false;
 
