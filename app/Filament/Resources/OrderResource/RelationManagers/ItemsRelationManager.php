@@ -22,6 +22,8 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('unit')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('quantity')
                     ->required(),
                 Forms\Components\Select::make('category_id')
@@ -51,6 +53,7 @@ class ItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quantity'),
+                Tables\Columns\TextColumn::make('unit'),
                 Tables\Columns\TextColumn::make('min_price')->suffix(' DA'),
                 Tables\Columns\TextColumn::make('max_price')->suffix(' DA'),
             ])
