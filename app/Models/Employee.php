@@ -49,6 +49,11 @@ class Employee extends Model
         return $this->hasMany(Offer::class);
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function getID($order = 0): string
     {
         $ids = $this->media()->where('type', 'ID')->get();
