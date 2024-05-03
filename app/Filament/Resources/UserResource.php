@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -36,9 +37,9 @@ class UserResource extends Resource
                     ->dehydrated(fn ($state) => filled($state))
                     ->required(fn (string $context): bool => $context === 'create')
                     ->hiddenOn('view'),
-                Forms\Components\TextInput::make('current_role')
-                    ->required()
-                    ->hiddenOn(['create', 'edit']),
+                Forms\Components\Select::make('role')
+                    ->relationship('roles', 'name')
+                    ->hidden(fn ($record) => $record && $record->current_role != 'ADMIN'),
             ]);
     }
 
@@ -74,6 +75,10 @@ class UserResource extends Resource
                         false: fn (Builder $query) => $query->whereNull('current_role'),
                         blank: fn (Builder $query) => $query,
                     ),
+                Filter::make('admins')
+                    ->query(fn (Builder $query): Builder => $query->where('current_role', 'ADMIN'))
+                    ->toggle()
+                    ->default(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
