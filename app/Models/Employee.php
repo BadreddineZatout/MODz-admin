@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -79,5 +80,15 @@ class Employee extends Model
         return Attribute::make(
             get: fn () => "{$this->first_name} {$this->last_name}",
         );
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('is_active', 1);
+    }
+
+    public function scopeInactive(Builder $query): void
+    {
+        $query->where('is_active', 0);
     }
 }
