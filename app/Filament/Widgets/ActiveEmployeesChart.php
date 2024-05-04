@@ -9,6 +9,8 @@ class ActiveEmployeesChart extends ChartWidget
 {
     protected static ?string $heading = 'Chart';
 
+    protected static ?int $sort = 2;
+
     protected static ?string $maxHeight = '300px';
 
     protected static ?string $pollingInterval = '30s';
