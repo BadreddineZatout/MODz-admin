@@ -7,9 +7,9 @@ use Filament\Widgets\ChartWidget;
 
 class ActiveEmployeesChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Employees';
 
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 3;
 
     protected static ?string $maxHeight = '300px';
 
