@@ -3,6 +3,9 @@
 namespace App\Filament\Resources\EmployeeResource\Pages;
 
 use App\Filament\Resources\EmployeeResource;
+use App\Filament\Resources\EmployeeResource\Widgets\EmployeeOverview;
+use App\Filament\Resources\EmployeeResource\Widgets\OffersStatusOverview;
+use App\Filament\Resources\EmployeeResource\Widgets\OrdersStatusOverview;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
@@ -10,6 +13,15 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewEmployee extends ViewRecord
 {
     protected static string $resource = EmployeeResource::class;
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            EmployeeOverview::class,
+            OrdersStatusOverview::class,
+            OffersStatusOverview::class,
+        ];
+    }
 
     protected function getHeaderActions(): array
     {
