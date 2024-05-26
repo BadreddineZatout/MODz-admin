@@ -17,6 +17,7 @@ class Provider extends Model implements HasMedia
         'category_id',
         'province_id',
         'state_id',
+        'description',
     ];
 
     /**

@@ -51,6 +51,8 @@ class ProviderResource extends Resource
                     ->relationship('province', 'name', fn (Builder $query, Get $get) => $query->where('state_id', $get('state_id')))
                     ->preload()
                     ->required(),
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
                 SpatieMediaLibraryFileUpload::make('images')
                     ->multiple()
                     ->disk(env('STORAGE_DISK'))
@@ -105,6 +107,8 @@ class ProviderResource extends Resource
             Infolists\Components\TextEntry::make('category.name'),
             Infolists\Components\TextEntry::make('state.name'),
             Infolists\Components\TextEntry::make('province.name'),
+            Infolists\Components\TextEntry::make('description')
+                ->columnSpanFull(),
             SpatieMediaLibraryImageEntry::make('images'),
 
         ]);
