@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProviderResource\Pages;
+use App\Filament\Resources\ProviderResource\RelationManagers\SocialMediaRelationManager;
 use App\Models\Provider;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -112,6 +113,13 @@ class ProviderResource extends Resource
             SpatieMediaLibraryImageEntry::make('images'),
 
         ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            SocialMediaRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
