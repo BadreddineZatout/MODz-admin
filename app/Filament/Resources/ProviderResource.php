@@ -5,9 +5,11 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProviderResource\Pages;
 use App\Models\Provider;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Infolists;
+use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -49,6 +51,11 @@ class ProviderResource extends Resource
                     ->relationship('province', 'name', fn (Builder $query, Get $get) => $query->where('state_id', $get('state_id')))
                     ->preload()
                     ->required(),
+                SpatieMediaLibraryFileUpload::make('images')
+                    ->multiple()
+                    ->disk(env('STORAGE_DISK'))
+                    ->preserveFilenames()
+                    ->rules(['image', 'mimes:jpeg,png,jpg']),
             ]);
     }
 
@@ -98,6 +105,7 @@ class ProviderResource extends Resource
             Infolists\Components\TextEntry::make('category.name'),
             Infolists\Components\TextEntry::make('state.name'),
             Infolists\Components\TextEntry::make('province.name'),
+            SpatieMediaLibraryImageEntry::make('images'),
 
         ]);
     }
