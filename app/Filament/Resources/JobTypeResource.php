@@ -16,7 +16,7 @@ class JobTypeResource extends Resource
 {
     protected static ?string $model = JobType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
     public static function form(Form $form): Form
     {
