@@ -51,6 +51,9 @@ class AdminPanelProvider extends PanelProvider
                         'default' => 2,
                     ]),
             ])
+            ->resources([
+                config('filament-logger.activity_resource'),
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
