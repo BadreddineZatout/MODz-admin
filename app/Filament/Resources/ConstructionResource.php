@@ -2,20 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Infolists;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
+use App\Filament\Resources\ConstructionResource\Pages;
+use App\Filament\Resources\ConstructionResource\RelationManagers\ItemsRelationManager;
 use App\Models\Construction;
+use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Form;
+use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Filters\Filter;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\ConstructionResource\Pages;
+use Illuminate\Database\Eloquent\Model;
 
 class ConstructionResource extends Resource
 {
@@ -156,7 +157,7 @@ class ConstructionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ItemsRelationManager::class,
         ];
     }
 
