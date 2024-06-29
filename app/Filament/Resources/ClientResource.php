@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClientResource\Pages;
+use App\Filament\Resources\ClientResource\RelationManagers\ConstructionsRelationManager;
 use App\Filament\Resources\ClientResource\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\ClientResource\RelationManagers\ProblemsRelationManager;
 use App\Models\Client;
@@ -121,6 +122,7 @@ class ClientResource extends Resource
     {
         return [
             OrdersRelationManager::class,
+            ConstructionsRelationManager::class,
             ProblemsRelationManager::class,
         ];
     }
