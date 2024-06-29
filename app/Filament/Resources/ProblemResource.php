@@ -2,14 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProblemResource\Pages;
-use App\Models\Problem;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Problem;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ProblemResource\Pages;
 
 class ProblemResource extends Resource
 {
@@ -22,16 +26,16 @@ class ProblemResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('client_id')
+                    ->relationship('client', 'id')
                     ->preload()
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
                     ->searchable(['first_name', 'last_name'])
-                    ->relationship('client', 'id')
                     ->required(),
                 Forms\Components\Select::make('employee_id')
+                    ->relationship('employee', 'id')
                     ->preload()
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
                     ->searchable(['first_name', 'last_name'])
-                    ->relationship('employee', 'id')
                     ->required(),
                 Forms\Components\DatePicker::make('report_date')
                     ->required(),
@@ -73,7 +77,28 @@ class ProblemResource extends Resource
                     ->boolean(),
             ])
             ->filters([
-                //
+                Filter::make('report_date')
+                    ->form([
+                        DatePicker::make('report_date'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['report_date'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('report_date', $date),
+                            );
+                    }),
+                SelectFilter::make('reporter')
+                    ->options([
+                        'CLIENT' => 'CLIENT',
+                        'EMPLOYEE' => 'EMPLOYEE',
+                    ]),
+                SelectFilter::make('client')
+                    ->relationship('client', 'id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}"),
+                SelectFilter::make('employee')
+                    ->relationship('employee', 'id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
