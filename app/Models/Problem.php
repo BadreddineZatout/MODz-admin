@@ -38,12 +38,12 @@ class Problem extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function clientScope(Builder $query): void
+    public function scopeClientReported(Builder $query): void
     {
         $query->where('reporter', 'CLIENT');
     }
 
-    public function employeeScope(Builder $query): void
+    public function scopeEmployeeReported(Builder $query): void
     {
         $query->where('reporter', 'EMPLOYEE');
     }

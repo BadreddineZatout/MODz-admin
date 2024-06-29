@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\ClientResource\Pages;
 
-use App\Filament\Resources\ClientResource;
-use App\Filament\Resources\ClientResource\Widgets\OrdersOverview;
-use App\Filament\Resources\ClientResource\Widgets\OrdersStatusOverview;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\ClientResource;
+use App\Filament\Resources\ClientResource\Widgets\OrdersOverview;
+use App\Filament\Resources\ClientResource\Widgets\OrdersStatusOverview;
 
 class ViewClient extends ViewRecord
 {

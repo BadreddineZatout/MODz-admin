@@ -4,13 +4,19 @@ namespace App\Filament\Resources\EmployeeResource\Widgets;
 
 use App\Models\Offer;
 use App\Models\Order;
-use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Stat;
+use App\Models\Problem;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
 class EmployeeOverview extends BaseWidget
 {
     public ?Model $record = null;
+
+    protected function getColumns(): int
+    {
+        return 3;
+    }
 
     protected function getStats(): array
     {
@@ -37,6 +43,8 @@ class EmployeeOverview extends BaseWidget
                 'employee_id' => $this->record->id,
                 'status' => 'REFUSED',
             ])->count()),
+            Stat::make('Reported Problems', Problem::employeeReported()->where('employee_id', $this->record->id)->count()),
+            Stat::make('Reported On Problems', Problem::clientReported()->where('employee_id', $this->record->id)->count()),
         ];
     }
 }
