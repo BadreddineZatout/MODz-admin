@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'state_id', 'province_id', 'category_id', 'is_active', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'state_id', 'province_id', 'is_active', 'status'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -35,9 +35,9 @@ class Employee extends Model
         return $this->belongsTo(Province::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, '_category_employee', 'B', 'A');
     }
 
     public function media(): BelongsToMany

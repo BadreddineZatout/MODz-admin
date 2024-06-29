@@ -4,9 +4,9 @@ namespace App\Filament\Resources\ClientResource\Widgets;
 
 use App\Models\Order;
 use App\Models\Problem;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Database\Eloquent\Model;
 
 class OrdersOverview extends BaseWidget
 {
