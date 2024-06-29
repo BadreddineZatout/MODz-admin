@@ -3,9 +3,10 @@
 namespace App\Filament\Resources\ClientResource\Widgets;
 
 use App\Models\Order;
-use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Stat;
+use App\Models\Problem;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
 class OrdersOverview extends BaseWidget
 {
@@ -34,6 +35,8 @@ class OrdersOverview extends BaseWidget
                 'client_id' => $this->record->id,
                 'status' => 'CANCELLED',
             ])->count()),
+            Stat::make('Reported Problems', Problem::clientReported()->where('client_id', $this->record->id)->count()),
+            Stat::make('Reported On Problems', Problem::employeeReported()->where('client_id', $this->record->id)->count()),
         ];
     }
 }

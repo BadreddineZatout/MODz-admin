@@ -28,6 +28,11 @@ class Client extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function problems(): HasMany
+    {
+        return $this->hasMany(Problem::class);
+    }
+
     protected function name(): Attribute
     {
         return Attribute::make(
