@@ -2,22 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeeResource\Pages;
-use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
-use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManager;
-use App\Models\Employee;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Tables;
 use Filament\Infolists;
+use App\Models\Employee;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
-use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Model;
+use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\ProblemsRelationManager;
 
 class EmployeeResource extends Resource
 {
@@ -193,6 +194,7 @@ class EmployeeResource extends Resource
         return [
             OffersRelationManager::class,
             OrdersRelationManager::class,
+            ProblemsRelationManager::class
         ];
     }
 
