@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ConstructionResource\Pages;
-use App\Models\Construction;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Tables;
 use Filament\Infolists;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\Construction;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ConstructionResource\Pages;
 
 class ConstructionResource extends Resource
 {
@@ -88,7 +92,30 @@ class ConstructionResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Filter::make('date')
+                    ->form([
+                        DatePicker::make('date'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['date'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('date', $date),
+                            );
+                    }),
+                SelectFilter::make('category')
+                    ->relationship('categories', 'name')
+                    ->preload()
+                    ->multiple(),
+                SelectFilter::make('jobType')
+                    ->relationship('jobType', 'name'),
+                SelectFilter::make('status')
+                    ->options([
+                        'PENDING' => 'Pending',
+                        'PROCESSING' => 'Processing',
+                        'DONE' => 'Done',
+                        'CANCELLED' => 'Cancelled',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
