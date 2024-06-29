@@ -25,9 +25,14 @@ class Category extends Model implements HasMedia
         'urgent' => 'boolean',
     ];
 
-    public function employees(): HasMany
+    public function employees(): BelongsToMany
     {
-        return $this->hasMany(Employee::class);
+        return $this->belongsToMany(Employee::class, '_category_employee', 'A', 'B');
+    }
+
+    public function constructions(): BelongsToMany
+    {
+        return $this->belongsToMany(Construction::class, '_category_construction', 'A', 'B');
     }
 
     public function jobTypes(): BelongsToMany

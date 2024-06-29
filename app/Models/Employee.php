@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'state_id', 'province_id', 'category_id', 'is_active', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'state_id', 'province_id', 'is_active', 'status'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -35,9 +35,9 @@ class Employee extends Model
         return $this->belongsTo(Province::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, '_category_employee', 'B', 'A');
     }
 
     public function media(): BelongsToMany
@@ -63,21 +63,21 @@ class Employee extends Model
     public function getID($order = 0): string
     {
         $ids = $this->media()->where('type', 'ID')->get();
-        if (!$ids->count()) {
+        if (! $ids->count()) {
             return '';
         }
 
-        return env('API_URL') . '/' . $ids[$order]->path;
+        return env('API_URL').'/'.$ids[$order]->path;
     }
 
     public function getSelfie(): string
     {
         $selfie = $this->media()->where('type', 'SELFIE')->first();
-        if (!$selfie) {
+        if (! $selfie) {
             return '';
         }
 
-        return env('API_URL') . '/' . $selfie->path;
+        return env('API_URL').'/'.$selfie->path;
     }
 
     protected function name(): Attribute

@@ -2,23 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Infolists;
-use App\Models\Employee;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
-use Illuminate\Contracts\Support\Htmlable;
 use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers\CategoriesRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\ProblemsRelationManager;
+use App\Models\Employee;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Model;
 
 class EmployeeResource extends Resource
 {
@@ -28,6 +27,8 @@ class EmployeeResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'first_name';
 
+    protected static ?int $navigationSort = 2;
+
     public static function getGloballySearchableAttributes(): array
     {
         return ['first_name', 'last_name'];
@@ -36,39 +37,6 @@ class EmployeeResource extends Resource
     public static function getGlobalSearchResultTitle(Model $record): string|Htmlable
     {
         return "$record->first_name $record->last_name";
-    }
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('first_name')
-                    ->required()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('last_name')
-                    ->required()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->required()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('national_id')
-                    ->required()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('state_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('province_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('category_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_active')
-                    ->required(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-            ]);
     }
 
     public static function table(Table $table): Table
@@ -85,7 +53,7 @@ class EmployeeResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('state.name'),
                 Tables\Columns\TextColumn::make('province.name'),
-                Tables\Columns\TextColumn::make('category.profession')
+                Tables\Columns\TextColumn::make('categories.profession')
                     ->label('Profession'),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
@@ -103,7 +71,8 @@ class EmployeeResource extends Resource
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('category')
-                    ->relationship('category', 'profession'),
+                    ->relationship('categories', 'profession')
+                    ->multiple(),
                 TernaryFilter::make('is_active'),
                 SelectFilter::make('status')
                     ->options([
@@ -140,7 +109,7 @@ class EmployeeResource extends Resource
                 ->copyMessageDuration(1500),
             Infolists\Components\TextEntry::make('state.name'),
             Infolists\Components\TextEntry::make('province.name'),
-            Infolists\Components\TextEntry::make('category.profession')
+            Infolists\Components\TextEntry::make('categories.profession')
                 ->label('Profession'),
             Infolists\Components\IconEntry::make('is_active')
                 ->boolean()
@@ -194,7 +163,8 @@ class EmployeeResource extends Resource
         return [
             OffersRelationManager::class,
             OrdersRelationManager::class,
-            ProblemsRelationManager::class
+            CategoriesRelationManager::class,
+            ProblemsRelationManager::class,
         ];
     }
 

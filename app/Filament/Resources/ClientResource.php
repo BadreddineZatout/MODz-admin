@@ -2,20 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Client;
-use Filament\Infolists;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Contracts\Support\Htmlable;
 use App\Filament\Resources\ClientResource\Pages;
+use App\Filament\Resources\ClientResource\RelationManagers\ConstructionsRelationManager;
 use App\Filament\Resources\ClientResource\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\ClientResource\RelationManagers\ProblemsRelationManager;
+use App\Models\Client;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Model;
 
 class ClientResource extends Resource
 {
@@ -24,6 +25,8 @@ class ClientResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $recordTitleAttribute = 'first_name';
+
+    protected static ?int $navigationSort = 1;
 
     public static function getGloballySearchableAttributes(): array
     {
@@ -119,7 +122,8 @@ class ClientResource extends Resource
     {
         return [
             OrdersRelationManager::class,
-            ProblemsRelationManager::class
+            ConstructionsRelationManager::class,
+            ProblemsRelationManager::class,
         ];
     }
 

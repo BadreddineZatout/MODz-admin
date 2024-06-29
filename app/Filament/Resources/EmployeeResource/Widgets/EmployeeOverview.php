@@ -5,9 +5,9 @@ namespace App\Filament\Resources\EmployeeResource\Widgets;
 use App\Models\Offer;
 use App\Models\Order;
 use App\Models\Problem;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Database\Eloquent\Model;
 
 class EmployeeOverview extends BaseWidget
 {

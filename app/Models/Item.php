@@ -26,4 +26,9 @@ class Item extends Model
     {
         return $this->belongsToMany(Order::class)->withPivot(['quantity']);
     }
+
+    public function constructions(): BelongsToMany
+    {
+        return $this->belongsToMany(Construction::class)->withPivot(['quantity']);
+    }
 }

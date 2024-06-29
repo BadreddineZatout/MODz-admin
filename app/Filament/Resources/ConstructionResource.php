@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\OrderResource\Pages;
-use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
-use App\Filament\Resources\OrderResource\RelationManagers\OffersRelationManager;
-use App\Models\Order;
+use App\Filament\Resources\ConstructionResource\Pages;
+use App\Filament\Resources\ConstructionResource\RelationManagers\ItemsRelationManager;
+use App\Models\Construction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
@@ -13,43 +12,43 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderResource extends Resource
+class ConstructionResource extends Resource
 {
-    protected static ?string $model = Order::class;
+    protected static ?string $model = Construction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
+    protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('client_id')
-                    ->relationship('client')
-                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                    ->relationship('client', 'id')
                     ->preload()
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
                     ->searchable(['first_name', 'last_name'])
                     ->required(),
-                Forms\Components\DatePicker::make('date')
-                    ->displayFormat('d/m/Y')
-                    ->required(),
-                Forms\Components\TimePicker::make('hour')
-                    ->required(),
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name')
+                Forms\Components\Select::make('categories')
+                    ->relationship('categories', 'name')
+                    ->preload()
+                    ->multiple()
                     ->required(),
                 Forms\Components\Select::make('job_type_id')
                     ->relationship('jobType', 'name')
                     ->required(),
+                Forms\Components\DatePicker::make('date')
+                    ->required(),
+                Forms\Components\TextInput::make('hour')
+                    ->required()
+                    ->maxLength(191),
                 Forms\Components\Select::make('status')
                     ->options([
                         'PENDING' => 'PENDING',
@@ -59,17 +58,9 @@ class OrderResource extends Resource
                     ])
                     ->hiddenOn('create')
                     ->required(),
-                Forms\Components\Toggle::make('is_urgent')
-                    ->required(),
+                Forms\Components\DatePicker::make('accepted_at'),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-                Forms\Components\DatePicker::make('accepted_at')
-                    ->displayFormat('d/m/Y'),
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee')
-                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
-                    ->preload()
-                    ->searchable(['first_name', 'last_name']),
             ]);
     }
 
@@ -78,16 +69,17 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('client.name')
-                    ->searchable(['first_name', 'last_name']),
+                    ->searchable(['first_name', 'last_name'])
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->date('d-m-Y')
+                    ->date('Y-m-d')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hour')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('categories.name')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('jobType.name')
-                    ->searchable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -96,19 +88,9 @@ class OrderResource extends Resource
                         'DONE' => 'success',
                         'CANCELLED' => 'danger',
                     }),
-                Tables\Columns\IconColumn::make('is_urgent')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('accepted_at')
-                    ->date('d-m-Y')
-                    ->sortable()
-                    ->default('---')
-                    ->toggleable()
-                    ->toggledHiddenByDefault(),
-                Tables\Columns\TextColumn::make('employee.name')
-                    ->searchable(['first_name', 'last_name'])
-                    ->default('---')
-                    ->toggleable()
-                    ->toggledHiddenByDefault(),
+                    ->date('Y-m-d')
+                    ->sortable(),
             ])
             ->filters([
                 Filter::make('date')
@@ -123,7 +105,9 @@ class OrderResource extends Resource
                             );
                     }),
                 SelectFilter::make('category')
-                    ->relationship('category', 'name'),
+                    ->relationship('categories', 'name')
+                    ->preload()
+                    ->multiple(),
                 SelectFilter::make('jobType')
                     ->relationship('jobType', 'name'),
                 SelectFilter::make('status')
@@ -133,10 +117,7 @@ class OrderResource extends Resource
                         'DONE' => 'Done',
                         'CANCELLED' => 'Cancelled',
                     ]),
-                TernaryFilter::make('is_urgent'),
-
-            ], layout: FiltersLayout::Modal)
-            ->filtersFormColumns(2)
+            ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -156,7 +137,7 @@ class OrderResource extends Resource
             Infolists\Components\TextEntry::make('date')
                 ->date('d-m-Y'),
             Infolists\Components\TextEntry::make('hour'),
-            Infolists\Components\TextEntry::make('category.name'),
+            Infolists\Components\TextEntry::make('categories.name'),
             Infolists\Components\TextEntry::make('jobType.name'),
             Infolists\Components\TextEntry::make('status')
                 ->badge()
@@ -166,12 +147,8 @@ class OrderResource extends Resource
                     'DONE' => 'success',
                     'CANCELLED' => 'danger',
                 }),
-            Infolists\Components\IconEntry::make('is_urgent')
-                ->boolean(),
             Infolists\Components\TextEntry::make('accepted_at')
                 ->date('d-m-Y'),
-            Infolists\Components\TextEntry::make('employee.name')
-                ->default('---'),
             Infolists\Components\TextEntry::make('description')
                 ->columnSpanFull(),
         ]);
@@ -181,17 +158,16 @@ class OrderResource extends Resource
     {
         return [
             ItemsRelationManager::class,
-            OffersRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
-            'view' => Pages\ViewOrder::route('/{record}'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
+            'index' => Pages\ListConstructions::route('/'),
+            'create' => Pages\CreateConstruction::route('/create'),
+            'view' => Pages\ViewConstruction::route('/{record}'),
+            'edit' => Pages\EditConstruction::route('/{record}/edit'),
         ];
     }
 }

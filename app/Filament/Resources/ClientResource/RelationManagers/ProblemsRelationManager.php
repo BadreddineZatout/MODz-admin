@@ -3,15 +3,15 @@
 namespace App\Filament\Resources\ClientResource\RelationManagers;
 
 use App\Models\Problem;
+use Filament\Forms\Components\DatePicker;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Resources\RelationManagers\RelationManager;
+use Illuminate\Database\Eloquent\Model;
 
 class ProblemsRelationManager extends RelationManager
 {
@@ -37,8 +37,8 @@ class ProblemsRelationManager extends RelationManager
             ->actions([
                 Action::make('View')
                     ->url(fn (Problem $record): string => route('filament.admin.resources.problems.view', $record))
-                    ->icon("heroicon-o-eye")
-                    ->openUrlInNewTab(true)
+                    ->icon('heroicon-o-eye')
+                    ->openUrlInNewTab(true),
             ])
             ->filters([
                 Filter::make('report_date')
@@ -59,7 +59,7 @@ class ProblemsRelationManager extends RelationManager
                     ]),
                 SelectFilter::make('employee')
                     ->relationship('employee', 'id')
-                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}"),
             ]);
     }
 }

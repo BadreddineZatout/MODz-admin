@@ -28,6 +28,11 @@ class Client extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function constructions(): HasMany
+    {
+        return $this->hasMany(Construction::class);
+    }
+
     public function problems(): HasMany
     {
         return $this->hasMany(Problem::class);
