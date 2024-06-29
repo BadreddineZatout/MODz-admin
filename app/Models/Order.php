@@ -13,7 +13,7 @@ class Order extends Model
 
     protected $casts = [
         'is_urgent' => 'boolean',
-        'accepted_at' => 'date',
+        'accepted_at' => 'date:Y-m-d',
     ];
 
     public $timestamps = false;
