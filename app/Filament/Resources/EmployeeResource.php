@@ -2,24 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Infolists;
-use App\Models\Employee;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
-use Illuminate\Contracts\Support\Htmlable;
 use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers\CategoriesRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\ProblemsRelationManager;
-use App\Filament\Resources\EmployeeResource\RelationManagers\CategoriesRelationManager;
+use App\Models\Employee;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Model;
 
 class EmployeeResource extends Resource
 {
@@ -28,6 +26,8 @@ class EmployeeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $recordTitleAttribute = 'first_name';
+
+    protected static ?int $navigationSort = 2;
 
     public static function getGloballySearchableAttributes(): array
     {

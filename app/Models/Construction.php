@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Construction extends Model
 {
-    protected $fillable = ["client_id", "description", "date", "hour", "status", "accepted_at", "job_type_id"];
+    protected $fillable = ['client_id', 'description', 'date', 'hour', 'status', 'accepted_at', 'job_type_id'];
 
     public $timestamps = false;
 
     protected $casts = [
-        "date" => "date:Y-m-d",
-        "accepted_at" => "date:Y-m-d",
+        'date' => 'date:Y-m-d',
+        'accepted_at' => 'date:Y-m-d',
     ];
 
     public function client(): BelongsTo

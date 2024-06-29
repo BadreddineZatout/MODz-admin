@@ -27,6 +27,8 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -167,10 +169,11 @@ class OrderResource extends Resource
             Infolists\Components\IconEntry::make('is_urgent')
                 ->boolean(),
             Infolists\Components\TextEntry::make('accepted_at')
-                ->date('d-m-Y')
-                ->default('---'),
+                ->date('d-m-Y'),
             Infolists\Components\TextEntry::make('employee.name')
                 ->default('---'),
+            Infolists\Components\TextEntry::make('description')
+                ->columnSpanFull(),
         ]);
     }
 

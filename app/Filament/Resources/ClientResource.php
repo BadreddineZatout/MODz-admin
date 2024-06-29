@@ -25,6 +25,8 @@ class ClientResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'first_name';
 
+    protected static ?int $navigationSort = 1;
+
     public static function getGloballySearchableAttributes(): array
     {
         return ['first_name', 'last_name'];

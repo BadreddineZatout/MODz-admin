@@ -63,21 +63,21 @@ class Employee extends Model
     public function getID($order = 0): string
     {
         $ids = $this->media()->where('type', 'ID')->get();
-        if (!$ids->count()) {
+        if (! $ids->count()) {
             return '';
         }
 
-        return env('API_URL') . '/' . $ids[$order]->path;
+        return env('API_URL').'/'.$ids[$order]->path;
     }
 
     public function getSelfie(): string
     {
         $selfie = $this->media()->where('type', 'SELFIE')->first();
-        if (!$selfie) {
+        if (! $selfie) {
             return '';
         }
 
-        return env('API_URL') . '/' . $selfie->path;
+        return env('API_URL').'/'.$selfie->path;
     }
 
     protected function name(): Attribute
