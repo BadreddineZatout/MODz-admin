@@ -2,13 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SubscriptionResource\Pages;
-use App\Models\Subscription;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Subscription;
+use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Model;
+use App\Filament\Resources\SubscriptionResource\Pages;
 
 class SubscriptionResource extends Resource
 {
@@ -26,6 +27,7 @@ class SubscriptionResource extends Resource
                     ->relationship('user', 'email', function ($query) {
                         return $query->where('current_role', 'EMPLOYEE');
                     })
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->profile->employee->name)
                     ->required(),
                 Forms\Components\Select::make('pack_id')
                     ->relationship('pack', 'name')
@@ -50,7 +52,7 @@ class SubscriptionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.email')
+                Tables\Columns\TextColumn::make('user.profile.employee.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pack.name')
