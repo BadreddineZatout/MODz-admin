@@ -66,10 +66,12 @@ class SubscriptionResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status'),
             ])
+            //TODO: add filters
             ->filters([
                 //
             ])
             ->actions([
+                //TODO: add activate and Cancel actions and groupe actions
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
