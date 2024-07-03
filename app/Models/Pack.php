@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pack extends Model
 {
-    protected $fillable = ["name", "price", "duration", "order_limit"];
+    protected $fillable = ['name', 'price', 'duration', 'order_limit'];
 
     public $timestamps = false;
 

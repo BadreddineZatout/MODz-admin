@@ -3,15 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PackResource\Pages;
-use App\Filament\Resources\PackResource\RelationManagers;
 use App\Models\Pack;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PackResource extends Resource
 {
@@ -70,6 +69,26 @@ class PackResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            Infolists\Components\TextEntry::make('user.email'),
+            Infolists\Components\TextEntry::make('pack.email'),
+            Infolists\Components\TextEntry::make('starts_at')
+                ->date('d-m-Y'),
+            Infolists\Components\TextEntry::make('ends_at')
+                ->date('d-m-Y'),
+            Infolists\Components\TextEntry::make('status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'PENDING' => 'gray',
+                    'ACTIVE' => 'success',
+                    'EXPIRED' => 'warning',
+                    'CANCELLED' => 'danger',
+                }),
+        ]);
     }
 
     public static function getPages(): array

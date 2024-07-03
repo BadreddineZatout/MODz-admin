@@ -21,7 +21,7 @@ class ProblemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
@@ -47,8 +47,6 @@ class ProblemResource extends Resource
                 Forms\Components\Select::make('construction_id')
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->client->name} {$record->date}")
                     ->relationship('construction', 'id'),
-                // Forms\Components\TextInput::make('construction_id')
-                //     ->numeric(),
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
