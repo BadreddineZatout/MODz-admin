@@ -44,7 +44,9 @@ class ProblemResource extends Resource
                 Forms\Components\Select::make('order_id')
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->category->name} {$record->date}")
                     ->relationship('order', 'id'),
-                //TODO: add Consturctions
+                Forms\Components\Select::make('construction_id')
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->client->name} {$record->date}")
+                    ->relationship('construction', 'id'),
                 // Forms\Components\TextInput::make('construction_id')
                 //     ->numeric(),
                 Forms\Components\Textarea::make('description')

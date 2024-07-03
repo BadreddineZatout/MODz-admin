@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Problem extends Model
 {
-    //TODO: Add consturction
-    protected $fillable = ['client_id', 'employee_id', 'report_date', 'order_id', 'description', 'reporter', 'is_treated'];
+    protected $fillable = ['client_id', 'employee_id', 'report_date', 'order_id', 'construction_id', 'description', 'reporter', 'is_treated'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -36,6 +35,11 @@ class Problem extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function construction(): BelongsTo
+    {
+        return $this->belongsTo(Construction::class);
     }
 
     public function scopeClientReported(Builder $query): void
