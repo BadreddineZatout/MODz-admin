@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Construction extends Model
 {
@@ -35,5 +36,10 @@ class Construction extends Model
     public function items(): BelongsToMany
     {
         return $this->belongsToMany(Item::class)->withPivot(['quantity']);
+    }
+
+    public function offers(): HasMany
+    {
+        return $this->hasMany(ConstructionOffer::class);
     }
 }
