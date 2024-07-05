@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\Subscription;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Model;
 use App\Filament\Resources\SubscriptionResource\Pages;
+use App\Models\Subscription;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class SubscriptionResource extends Resource
 {

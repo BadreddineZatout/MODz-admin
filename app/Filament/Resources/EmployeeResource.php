@@ -55,6 +55,9 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('province.name'),
                 Tables\Columns\TextColumn::make('categories.profession')
                     ->label('Profession'),
+                Tables\Columns\TextColumn::make('profile.user.activeSubscription.pack.name')
+                    ->label('Active Subscription')
+                    ->default('---'),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('status')
@@ -111,6 +114,9 @@ class EmployeeResource extends Resource
             Infolists\Components\TextEntry::make('province.name'),
             Infolists\Components\TextEntry::make('categories.profession')
                 ->label('Profession'),
+            Infolists\Components\TextEntry::make('profile.user.activeSubscription.pack.name')
+                ->label('Active Subscription')
+                ->default('---'),
             Infolists\Components\IconEntry::make('is_active')
                 ->boolean()
                 ->label('Active State'),
