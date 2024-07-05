@@ -56,6 +56,9 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('activeSubscription.pack.name')
+                    ->label('Active Subscription')
+                    ->default('---'),
                 Tables\Columns\TextColumn::make('current_role')
                     ->default('--'),
             ])
