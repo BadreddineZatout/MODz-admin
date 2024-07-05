@@ -25,4 +25,9 @@ class Subscription extends Model
     {
         return $this->belongsTo(Pack::class);
     }
+
+    // public function canActivate(): bool
+    // {
+    //     return $this->status !=
+    // }
 }

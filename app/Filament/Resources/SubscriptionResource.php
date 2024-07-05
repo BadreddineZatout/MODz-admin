@@ -7,8 +7,11 @@ use App\Models\Subscription;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
@@ -68,7 +71,14 @@ class SubscriptionResource extends Resource
                 Tables\Columns\TextColumn::make('ends_at')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'PENDING' => 'gray',
+                        'ACTIVE' => 'success',
+                        'CANCELLED' => 'danger',
+                        'EXPIRED' => 'warning',
+                    }),
             ])
             ->filters([
                 SelectFilter::make('user_id')
@@ -111,10 +121,47 @@ class SubscriptionResource extends Resource
                     }),
             ], layout: FiltersLayout::AboveContent)
             ->actions([
-                //TODO: add activate and Cancel actions and groupe actions
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make()->color('success'),
+                    Tables\Actions\EditAction::make()->color('warning'),
+                    Tables\Actions\DeleteAction::make(),
+                    Action::make('Activate')
+                        ->color('success')
+                        ->icon('heroicon-o-check-circle')
+                        ->visible(fn ($record) => $record->status == 'PENDING')
+                        ->action(function ($record) {
+                            Subscription::where([
+                                'user_id' => $record->user_id,
+                                'status' => 'ACTIVE',
+                            ])->update([
+                                'status' => 'CANCELLED',
+                            ]);
+                            $record->status = 'ACTIVE';
+                            $record->starts_at = now();
+                            $record->ends_at = now()->addMonths($record->pack->duration);
+                            $record->save();
+
+                            return Notification::make()
+                                ->title('Employee subscription is activated')
+                                ->success()
+                                ->send();
+                        })
+                        ->requiresConfirmation(),
+                    Action::make('Cancel')
+                        ->color('danger')
+                        ->icon('heroicon-o-x-circle')
+                        ->visible(fn ($record) => $record->status != 'CANCELLED' || $record->status != 'EXPIRED')
+                        ->action(function ($record) {
+                            $record->status = 'CANCELLED';
+                            $record->save();
+
+                            return Notification::make()
+                                ->title('Employee subscription is cancelled')
+                                ->danger()
+                                ->send();
+                        })
+                        ->requiresConfirmation(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
