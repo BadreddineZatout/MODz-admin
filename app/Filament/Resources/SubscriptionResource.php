@@ -5,10 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SubscriptionResource\Pages;
 use App\Models\Subscription;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class SubscriptionResource extends Resource
@@ -53,11 +58,10 @@ class SubscriptionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.profile.employee.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('User')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('pack.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('starts_at')
                     ->date()
                     ->sortable(),
@@ -66,10 +70,46 @@ class SubscriptionResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status'),
             ])
-            //TODO: add filters
             ->filters([
-                //
-            ])
+                SelectFilter::make('user_id')
+                    ->relationship('user', 'email', function ($query) {
+                        return $query->where('current_role', 'EMPLOYEE');
+                    })
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->profile->employee->name)
+                    ->label('User'),
+                SelectFilter::make('pack_id')
+                    ->relationship('pack', 'name')
+                    ->label('Pack'),
+                SelectFilter::make('status')
+                    ->options([
+                        'PENDING' => 'PENDING',
+                        'ACTIVE' => 'ACTIVE',
+                        'EXPIRED' => 'EXPIRED',
+                        'CANCELLED' => 'CANCELLED',
+                    ]),
+                Filter::make('start_date')
+                    ->form([
+                        DatePicker::make('start_date'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['start_date'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('starts_at', '>=', $date),
+                            );
+                    }),
+                Filter::make('end_date')
+                    ->form([
+                        DatePicker::make('end_date'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['end_date'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('ends_at', '<=', $date),
+                            );
+                    }),
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 //TODO: add activate and Cancel actions and groupe actions
                 Tables\Actions\ViewAction::make(),
