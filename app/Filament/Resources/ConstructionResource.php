@@ -47,6 +47,12 @@ class ConstructionResource extends Resource
                 Forms\Components\TextInput::make('hour')
                     ->required()
                     ->maxLength(191),
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'INDIVIDUAL' => 'INDIVIDUAL',
+                        'GROUP' => 'GROUP',
+                    ])
+                    ->required(),
                 Forms\Components\Select::make('status')
                     ->options([
                         'PENDING' => 'PENDING',
@@ -76,6 +82,7 @@ class ConstructionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('categories.name')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -104,6 +111,11 @@ class ConstructionResource extends Resource
                     ->relationship('categories', 'name')
                     ->preload()
                     ->multiple(),
+                SelectFilter::make('type')
+                    ->options([
+                        'INDIVIDUAL' => 'Individual',
+                        'GROUP' => 'Group',
+                    ]),
                 SelectFilter::make('status')
                     ->options([
                         'PENDING' => 'Pending',
@@ -132,6 +144,7 @@ class ConstructionResource extends Resource
                 ->date('d-m-Y'),
             Infolists\Components\TextEntry::make('hour'),
             Infolists\Components\TextEntry::make('categories.name'),
+            Infolists\Components\TextEntry::make('type'),
             Infolists\Components\TextEntry::make('status')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {
