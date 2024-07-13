@@ -140,7 +140,8 @@ class SubscriptionResource extends Resource
                             ]);
                             $record->status = 'ACTIVE';
                             $record->starts_at = now();
-                            $record->ends_at = now()->addMonths($record->pack->duration);
+                            if ($record->pack->duration)
+                                $record->ends_at = now()->addMonths($record->pack->duration);
                             $record->save();
 
                             return Notification::make()

@@ -34,7 +34,9 @@ class PackResource extends Resource
                 Forms\Components\Select::make('duration')
                     ->required()
                     ->options([
+                        0 => 'Unlimited',
                         1 => '1 Month',
+                        3 => '3 Month',
                         6 => '6 Month',
                         12 => '1 Year',
                     ])
