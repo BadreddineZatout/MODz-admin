@@ -34,9 +34,9 @@ class PackResource extends Resource
                 Forms\Components\Select::make('duration')
                     ->required()
                     ->options([
-                        1 => "1 Month",
-                        6 => "6 Month",
-                        12 => "1 Year",
+                        1 => '1 Month',
+                        6 => '6 Month',
+                        12 => '1 Year',
                     ])
                     ->default(1),
                 Forms\Components\TextInput::make('order_limit')
@@ -51,13 +51,13 @@ class PackResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money("DZD")
+                    ->money('DZD')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('duration')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order_limit')
-                    ->default('---')
+                    ->default('Unlimited')
                     ->numeric()
                     ->sortable(),
             ])
