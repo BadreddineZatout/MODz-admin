@@ -42,9 +42,6 @@ class ConstructionResource extends Resource
                     ->preload()
                     ->multiple()
                     ->required(),
-                Forms\Components\Select::make('job_type_id')
-                    ->relationship('jobType', 'name')
-                    ->required(),
                 Forms\Components\DatePicker::make('date')
                     ->required(),
                 Forms\Components\TextInput::make('hour')
@@ -79,8 +76,6 @@ class ConstructionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('categories.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jobType.name')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -109,8 +104,6 @@ class ConstructionResource extends Resource
                     ->relationship('categories', 'name')
                     ->preload()
                     ->multiple(),
-                SelectFilter::make('jobType')
-                    ->relationship('jobType', 'name'),
                 SelectFilter::make('status')
                     ->options([
                         'PENDING' => 'Pending',
@@ -139,7 +132,6 @@ class ConstructionResource extends Resource
                 ->date('d-m-Y'),
             Infolists\Components\TextEntry::make('hour'),
             Infolists\Components\TextEntry::make('categories.name'),
-            Infolists\Components\TextEntry::make('jobType.name'),
             Infolists\Components\TextEntry::make('status')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {

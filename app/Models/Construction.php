@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Construction extends Model
 {
-    protected $fillable = ['client_id', 'description', 'date', 'hour', 'status', 'accepted_at', 'job_type_id'];
+    protected $fillable = ['client_id', 'description', 'date', 'hour', 'status', 'accepted_at'];
 
     public $timestamps = false;
 
