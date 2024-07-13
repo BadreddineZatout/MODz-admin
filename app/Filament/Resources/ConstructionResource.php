@@ -27,6 +27,11 @@ class ConstructionResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 'PENDING')->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
