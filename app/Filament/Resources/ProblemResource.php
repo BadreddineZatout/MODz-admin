@@ -23,6 +23,16 @@ class ProblemResource extends Resource
 
     protected static ?int $navigationSort = 6;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where("is_treated", false)->count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return "danger";
+    }
+
     public static function form(Form $form): Form
     {
         return $form
