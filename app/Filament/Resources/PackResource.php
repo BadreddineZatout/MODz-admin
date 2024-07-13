@@ -43,6 +43,8 @@ class PackResource extends Resource
                     ->default(1),
                 Forms\Components\TextInput::make('order_limit')
                     ->numeric(),
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -94,6 +96,8 @@ class PackResource extends Resource
                     'EXPIRED' => 'warning',
                     'CANCELLED' => 'danger',
                 }),
+            Infolists\Components\TextEntry::make('description')
+                ->columnSpanFull(),
         ]);
     }
 

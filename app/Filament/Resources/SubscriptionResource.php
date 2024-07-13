@@ -2,22 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
+use App\Filament\Resources\SubscriptionResource\Pages;
 use App\Models\Subscription;
-use Filament\Resources\Resource;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Filters\Filter;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\SubscriptionResource\Pages;
+use Illuminate\Database\Eloquent\Model;
 
 class SubscriptionResource extends Resource
 {
@@ -140,8 +140,9 @@ class SubscriptionResource extends Resource
                             ]);
                             $record->status = 'ACTIVE';
                             $record->starts_at = now();
-                            if ($record->pack->duration)
+                            if ($record->pack->duration) {
                                 $record->ends_at = now()->addMonths($record->pack->duration);
+                            }
                             $record->save();
 
                             return Notification::make()

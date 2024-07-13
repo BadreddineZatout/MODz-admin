@@ -25,12 +25,12 @@ class ProblemResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where("is_treated", false)->count();
+        return static::getModel()::where('is_treated', false)->count();
     }
 
     public static function getNavigationBadgeColor(): ?string
     {
-        return "danger";
+        return 'danger';
     }
 
     public static function form(Form $form): Form
