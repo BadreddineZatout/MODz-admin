@@ -8,6 +8,8 @@ use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManag
 use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\ProblemsRelationManager;
 use App\Models\Employee;
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -39,6 +41,44 @@ class EmployeeResource extends Resource
         return "$record->first_name $record->last_name";
     }
 
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('first_name')
+                    ->required()
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('last_name')
+                    ->required()
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('phone')
+                    ->required()
+                    ->tel(),
+                Forms\Components\TextInput::make('national_id')
+                    ->required(),
+                Forms\Components\Select::make('categories')
+                    ->relationship('categories', 'name')
+                    ->preload()
+                    ->multiple()
+                    ->required(),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'PENDING' => 'PENDING',
+                        'VALID' => 'VALID',
+                        'REFUSED' => 'DONE',
+                    ])
+                    ->required(),
+                Forms\Components\Toggle::make('is_active'),
+                Forms\Components\Toggle::make('can_work_construction'),
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'INDIVIDUAL' => 'INDIVIDUAL',
+                        'GROUP' => 'GROUP',
+                    ])
+                    ->required(),
+            ]);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -55,10 +95,14 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('province.name'),
                 Tables\Columns\TextColumn::make('categories.profession')
                     ->label('Profession'),
+                Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('profile.user.activeSubscription.pack.name')
                     ->label('Active Subscription')
                     ->default('---'),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('can_work_construction')
+                    ->toggleable()
                     ->boolean(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
@@ -77,16 +121,23 @@ class EmployeeResource extends Resource
                     ->relationship('categories', 'profession')
                     ->multiple(),
                 TernaryFilter::make('is_active'),
+                TernaryFilter::make('can_work_construction'),
                 SelectFilter::make('status')
                     ->options([
                         'PENDING' => 'Pending',
                         'VALID' => 'Valid',
                         'REFUSED' => 'Refused',
                     ]),
+                SelectFilter::make('type')
+                    ->options([
+                        'INDIVIDUAL' => 'Individual',
+                        'GROUP' => 'Group',
+                    ]),
             ], layout: FiltersLayout::Modal)
             ->filtersFormColumns(2)
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -114,12 +165,16 @@ class EmployeeResource extends Resource
             Infolists\Components\TextEntry::make('province.name'),
             Infolists\Components\TextEntry::make('categories.profession')
                 ->label('Profession'),
+            Infolists\Components\TextEntry::make('type'),
             Infolists\Components\TextEntry::make('profile.user.activeSubscription.pack.name')
                 ->label('Active Subscription')
                 ->default('---'),
             Infolists\Components\IconEntry::make('is_active')
                 ->boolean()
                 ->label('Active State'),
+            Infolists\Components\IconEntry::make('can_work_construction')
+                ->boolean()
+                ->label('Can Work Construction'),
             Infolists\Components\TextEntry::make('status')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {
@@ -178,6 +233,7 @@ class EmployeeResource extends Resource
     {
         return [
             'index' => Pages\ListEmployees::route('/'),
+            'edit' => Pages\EditEmployee::route('/{record}/edit'),
             'view' => Pages\ViewEmployee::route('/{record}'),
         ];
     }

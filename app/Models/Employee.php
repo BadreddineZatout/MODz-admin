@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'state_id', 'province_id', 'is_active', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'state_id', 'province_id', 'is_active', 'status', 'can_work_construction', 'type'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -19,6 +19,11 @@ class Employee extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'can_work_construction' => 'boolean',
+    ];
 
     public function profile(): HasOne
     {
