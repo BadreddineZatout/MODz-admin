@@ -8,10 +8,14 @@ use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManag
 use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\ProblemsRelationManager;
 use App\Models\Employee;
+use Closure;
+use Filament\Actions\EditAction;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
@@ -69,7 +73,14 @@ class EmployeeResource extends Resource
                     ])
                     ->required(),
                 Forms\Components\Toggle::make('is_active'),
-                Forms\Components\Toggle::make('can_work_construction'),
+                Forms\Components\Toggle::make('can_work_construction')
+                    ->rules([
+                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                            if ($get('type') === 'INDIVIDUAL' && $value) {
+                                $fail('Only group employee can work constructions.');
+                            }
+                        },
+                    ]),
                 Forms\Components\Select::make('type')
                     ->options([
                         'INDIVIDUAL' => 'INDIVIDUAL',
@@ -138,6 +149,23 @@ class EmployeeResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                // ->before(function (EditAction $action, $data) {
+                //     if (! false) {
+                //         Notification::make()
+                //             ->warning()
+                //             ->title('You don\'t have an active subscription!')
+                //             ->body('Choose a plan to continue.')
+                //             ->persistent()
+                //             ->actions([
+                //                 Action::make('subscribe')
+                //                     ->button()
+                //                     ->url(route('subscribe'), shouldOpenInNewTab: true),
+                //             ])
+                //             ->send();
+
+                //         $action->halt();
+                //     }
+                // }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -196,7 +224,6 @@ class EmployeeResource extends Resource
                 ]),
             Infolists\Components\Section::make('National ID Images')
                 ->schema([
-
                     Infolists\Components\ImageEntry::make('ID')
                         ->label('ID Card')
                         ->state(function (Model $record) {
