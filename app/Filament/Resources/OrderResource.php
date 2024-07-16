@@ -54,6 +54,7 @@ class OrderResource extends Resource
                     ->options([
                         'PENDING' => 'PENDING',
                         'PROCESSING' => 'PROCESSING',
+                        'WAITING' => 'WAITING',
                         'DONE' => 'DONE',
                         'CANCELLED' => 'CANCELLED',
                     ])
@@ -93,6 +94,7 @@ class OrderResource extends Resource
                     ->color(fn (string $state): string => match ($state) {
                         'PENDING' => 'gray',
                         'PROCESSING' => 'warning',
+                        'WAITING' => 'info',
                         'DONE' => 'success',
                         'CANCELLED' => 'danger',
                     }),
@@ -130,6 +132,7 @@ class OrderResource extends Resource
                     ->options([
                         'PENDING' => 'Pending',
                         'PROCESSING' => 'Processing',
+                        'WAITING' => 'Waiting',
                         'DONE' => 'Done',
                         'CANCELLED' => 'Cancelled',
                     ]),
@@ -163,6 +166,7 @@ class OrderResource extends Resource
                 ->color(fn (string $state): string => match ($state) {
                     'PENDING' => 'gray',
                     'PROCESSING' => 'warning',
+                    'WAITING' => 'info',
                     'DONE' => 'success',
                     'CANCELLED' => 'danger',
                 }),
