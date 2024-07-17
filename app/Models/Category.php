@@ -44,9 +44,4 @@ class Category extends Model implements HasMedia
     {
         return $this->hasMany(Item::class);
     }
-
-    public function constructionOffers(): BelongsToMany
-    {
-        return $this->belongsToMany(ConstructionOffer::class, '_category_construction_offer', 'A', 'B');
-    }
 }

@@ -65,6 +65,11 @@ class Employee extends Model
         return $this->hasMany(Problem::class);
     }
 
+    public function constructions(): BelongsToMany
+    {
+        return $this->belongsToMany(Construction::class, '_construction_employee', 'B', 'A');
+    }
+
     public function getID($order = 0): string
     {
         $ids = $this->media()->where('type', 'ID')->get();

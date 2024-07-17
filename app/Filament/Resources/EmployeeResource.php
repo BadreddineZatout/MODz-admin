@@ -9,13 +9,11 @@ use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManag
 use App\Filament\Resources\EmployeeResource\RelationManagers\ProblemsRelationManager;
 use App\Models\Employee;
 use Closure;
-use Filament\Actions\EditAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
@@ -149,23 +147,6 @@ class EmployeeResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                // ->before(function (EditAction $action, $data) {
-                //     if (! false) {
-                //         Notification::make()
-                //             ->warning()
-                //             ->title('You don\'t have an active subscription!')
-                //             ->body('Choose a plan to continue.')
-                //             ->persistent()
-                //             ->actions([
-                //                 Action::make('subscribe')
-                //                     ->button()
-                //                     ->url(route('subscribe'), shouldOpenInNewTab: true),
-                //             ])
-                //             ->send();
-
-                //         $action->halt();
-                //     }
-                // }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

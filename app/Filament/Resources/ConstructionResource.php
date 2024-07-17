@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ConstructionResource\Pages;
+use App\Filament\Resources\ConstructionResource\RelationManagers\EmployeesRelationManager;
 use App\Filament\Resources\ConstructionResource\RelationManagers\ItemsRelationManager;
-use App\Filament\Resources\ConstructionResource\RelationManagers\OffersRelationManager;
 use App\Models\Construction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -169,7 +169,7 @@ class ConstructionResource extends Resource
     {
         return [
             ItemsRelationManager::class,
-            OffersRelationManager::class,
+            EmployeesRelationManager::class,
         ];
     }
 

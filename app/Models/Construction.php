@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Construction extends Model
 {
@@ -23,11 +22,6 @@ class Construction extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function jobType(): BelongsTo
-    {
-        return $this->belongsTo(JobType::class);
-    }
-
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, '_category_construction', 'B', 'A');
@@ -38,8 +32,24 @@ class Construction extends Model
         return $this->belongsToMany(Item::class)->withPivot(['quantity']);
     }
 
-    public function offers(): HasMany
+    public function employees(): BelongsToMany
     {
-        return $this->hasMany(ConstructionOffer::class);
+        return $this->belongsToMany(Employee::class, '_construction_employee', 'A', 'B');
+    }
+
+    public function assignedCategories(): array
+    {
+        if (! count($this->employees)) {
+            return [];
+        }
+        if ($this->employees->first()->type == 'GROUP') {
+            return $this->categories->pluck('id')->toArray();
+        }
+        $assignedCategories = [];
+        $this->employees->each(function ($employee) use (&$assignedCategories) {
+            $assignedCategories = array_merge($assignedCategories, array_intersect($this->categories->pluck('id')->toArray(), $employee->categories->pluck('id')->toArray()));
+        });
+
+        return $assignedCategories;
     }
 }
