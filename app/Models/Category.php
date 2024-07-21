@@ -12,7 +12,7 @@ class Category extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $fillable = ['name', 'profession', 'description', 'urgent'];
+    protected $fillable = ['name', 'profession', 'description', 'urgent', 'for_construction'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -23,6 +23,7 @@ class Category extends Model implements HasMedia
 
     protected $casts = [
         'urgent' => 'boolean',
+        'for_construction' => 'boolean',
     ];
 
     public function employees(): BelongsToMany

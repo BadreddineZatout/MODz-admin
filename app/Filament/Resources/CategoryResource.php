@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
+use App\Filament\Resources\CategoryResource\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\CategoryResource\RelationManagers\JobTypesRelationManager;
 use App\Models\Category;
 use Filament\Forms;
@@ -35,6 +36,7 @@ class CategoryResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\Toggle::make('urgent'),
+                Forms\Components\Toggle::make('for_construction'),
                 SpatieMediaLibraryFileUpload::make('image')
                     ->multiple()
                     ->disk(env('STORAGE_DISK'))
@@ -52,6 +54,7 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('profession')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('urgent')->boolean(),
+                Tables\Columns\IconColumn::make('for_construction')->boolean(),
             ])
             ->filters([
                 TernaryFilter::make('urgent'),
@@ -72,6 +75,7 @@ class CategoryResource extends Resource
     {
         return [
             JobTypesRelationManager::class,
+            ItemsRelationManager::class,
         ];
     }
 

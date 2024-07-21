@@ -10,10 +10,16 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class JobTypesRelationManager extends RelationManager
 {
     protected static string $relationship = 'jobTypes';
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return ! $ownerRecord->for_construction;
+    }
 
     public function form(Form $form): Form
     {
