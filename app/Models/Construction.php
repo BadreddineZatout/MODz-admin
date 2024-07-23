@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Construction extends Model
 {
-    protected $fillable = ['client_id', 'description', 'date', 'hour', 'status', 'accepted_at', 'type'];
+    protected $fillable = ['client_id', 'construction_type', 'description', 'date', 'hour', 'status', 'accepted_at', 'type'];
 
     public $timestamps = false;
 

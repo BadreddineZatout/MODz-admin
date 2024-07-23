@@ -42,6 +42,12 @@ class ConstructionResource extends Resource
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
                     ->searchable(['first_name', 'last_name'])
                     ->required(),
+                Forms\Components\Select::make('construction_type')
+                    ->options([
+                        'VILLA' => 'VILLA',
+                        'APARTMENT' => 'APARTMENT',
+                    ])
+                    ->required(),
                 Forms\Components\Select::make('categories')
                     ->relationship('categories', 'name')
                     ->preload()
@@ -80,6 +86,7 @@ class ConstructionResource extends Resource
                 Tables\Columns\TextColumn::make('client.name')
                     ->searchable(['first_name', 'last_name'])
                     ->sortable(),
+                Tables\Columns\TextColumn::make('construction_type'),
                 Tables\Columns\TextColumn::make('date')
                     ->date('Y-m-d')
                     ->sortable(),
@@ -145,6 +152,8 @@ class ConstructionResource extends Resource
     {
         return $infolist->schema([
             Infolists\Components\TextEntry::make('client.name'),
+            Infolists\Components\TextEntry::make('construction_type')
+                ->label('Construction type'),
             Infolists\Components\TextEntry::make('date')
                 ->date('d-m-Y'),
             Infolists\Components\TextEntry::make('hour'),

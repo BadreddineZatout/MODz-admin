@@ -24,13 +24,13 @@ class ConstructionsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('categories.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jobType.name')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('construction_type'),
                 Tables\Columns\TextColumn::make('date')
                     ->date('Y-m-d')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hour')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
