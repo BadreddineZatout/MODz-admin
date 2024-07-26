@@ -59,8 +59,6 @@ class ConstructionsRelationManager extends RelationManager
                     ->relationship('categories', 'name')
                     ->preload()
                     ->multiple(),
-                SelectFilter::make('jobType')
-                    ->relationship('jobType', 'name'),
                 SelectFilter::make('status')
                     ->options([
                         'PENDING' => 'Pending',
