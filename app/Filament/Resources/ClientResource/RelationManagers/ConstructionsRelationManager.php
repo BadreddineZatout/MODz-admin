@@ -25,6 +25,10 @@ class ConstructionsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('categories.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('construction_type'),
+                Tables\Columns\TextColumn::make('state.name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('province.name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date('Y-m-d')
                     ->sortable(),

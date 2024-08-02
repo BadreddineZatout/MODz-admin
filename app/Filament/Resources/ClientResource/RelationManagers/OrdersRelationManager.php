@@ -33,6 +33,10 @@ class OrdersRelationManager extends RelationManager
                     ->searchable(),
                 Tables\Columns\TextColumn::make('jobType.name')
                     ->searchable(),
+                    Tables\Columns\TextColumn::make('state.name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('province.name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

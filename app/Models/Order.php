@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    protected $fillable = ['client_id', 'description', 'date', 'hour', 'category_id', 'job_type_id', 'status', 'is_urgent', 'accepted_at', 'employee_id'];
+    protected $fillable = ['client_id', 'description', 'date', 'hour', 'category_id', 'job_type_id', 'status', 'is_urgent', 'accepted_at', 'employee_id', "state_id", "province_id"];
 
     protected $casts = [
         'is_urgent' => 'boolean',
@@ -31,6 +31,16 @@ class Order extends Model
     public function jobType(): BelongsTo
     {
         return $this->belongsTo(JobType::class);
+    }
+
+    public function state(): BelongsTo
+    {
+        return $this->belongsTo(State::class);
+    }
+
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo(Province::class);
     }
 
     public function items(): BelongsToMany

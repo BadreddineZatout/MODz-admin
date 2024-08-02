@@ -2,24 +2,25 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use App\Models\Order;
+use Filament\Forms\Get;
+use Filament\Infolists;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\OrderResource\RelationManagers\OffersRelationManager;
-use App\Models\Order;
-use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Form;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 class OrderResource extends Resource
 {
@@ -49,6 +50,14 @@ class OrderResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('job_type_id')
                     ->relationship('jobType', 'name')
+                    ->required(),
+                Forms\Components\Select::make('state_id')
+                    ->relationship('state', 'name')
+                    ->preload()
+                    ->live()
+                    ->required(),
+                Forms\Components\Select::make('province_id')
+                    ->relationship('province', 'name', fn(Get $get, $query) => $query->where('state_id', $get('state_id')))
                     ->required(),
                 Forms\Components\Select::make('status')
                     ->options([
@@ -88,6 +97,10 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('jobType.name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('state.name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('province.name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
@@ -161,6 +174,8 @@ class OrderResource extends Resource
             Infolists\Components\TextEntry::make('hour'),
             Infolists\Components\TextEntry::make('category.name'),
             Infolists\Components\TextEntry::make('jobType.name'),
+            Infolists\Components\TextEntry::make('state.name'),
+            Infolists\Components\TextEntry::make('province.name'),
             Infolists\Components\TextEntry::make('status')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {
