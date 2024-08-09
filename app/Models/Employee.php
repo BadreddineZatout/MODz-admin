@@ -77,7 +77,7 @@ class Employee extends Model
             return '';
         }
 
-        return env('API_URL').'/'.$ids[$order]->path;
+        return $ids[$order]->path;
     }
 
     public function getSelfie(): string
@@ -87,7 +87,7 @@ class Employee extends Model
             return '';
         }
 
-        return env('API_URL').'/'.$selfie->path;
+        return $selfie->path;
     }
 
     protected function name(): Attribute

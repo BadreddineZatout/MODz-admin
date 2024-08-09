@@ -2,23 +2,23 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ConstructionResource\Pages;
+use App\Filament\Resources\ConstructionResource\RelationManagers\EmployeesRelationManager;
+use App\Filament\Resources\ConstructionResource\RelationManagers\ItemsRelationManager;
+use App\Models\Construction;
 use Filament\Forms;
-use Filament\Tables;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Infolists;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\Construction;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Filters\Filter;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\ConstructionResource\Pages;
-use App\Filament\Resources\ConstructionResource\RelationManagers\ItemsRelationManager;
-use App\Filament\Resources\ConstructionResource\RelationManagers\EmployeesRelationManager;
+use Illuminate\Database\Eloquent\Model;
 
 class ConstructionResource extends Resource
 {
@@ -60,7 +60,7 @@ class ConstructionResource extends Resource
                     ->live()
                     ->required(),
                 Forms\Components\Select::make('province_id')
-                    ->relationship('province', 'name', fn(Get $get, $query) => $query->where('state_id', $get('state_id')))
+                    ->relationship('province', 'name', fn (Get $get, $query) => $query->where('state_id', $get('state_id')))
                     ->required(),
                 Forms\Components\DatePicker::make('date')
                     ->required(),

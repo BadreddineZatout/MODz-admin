@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    protected $fillable = ['client_id', 'description', 'date', 'hour', 'category_id', 'job_type_id', 'status', 'is_urgent', 'accepted_at', 'employee_id', "state_id", "province_id"];
+    protected $fillable = ['client_id', 'description', 'date', 'hour', 'category_id', 'job_type_id', 'status', 'is_urgent', 'accepted_at', 'employee_id', 'state_id', 'province_id'];
 
     protected $casts = [
         'is_urgent' => 'boolean',
