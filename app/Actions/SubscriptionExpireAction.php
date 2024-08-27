@@ -11,7 +11,7 @@ class SubscriptionExpireAction
         Subscription::where('status', 'ACTIVE')
             ->get()->map(function (Subscription $subscription) {
                 if ($subscription->ends_at?->lt(now())) {
-                    $subscription->status = 'CANCELLED';
+                    $subscription->status = 'EXPIRED';
                     $subscription->save();
                 }
             });
