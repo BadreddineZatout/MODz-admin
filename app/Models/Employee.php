@@ -70,6 +70,11 @@ class Employee extends Model
         return $this->belongsToMany(Construction::class, '_construction_employee', 'B', 'A');
     }
 
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
     public function getID($order = 0): string
     {
         $ids = $this->media()->where('type', 'ID')->get();
@@ -94,6 +99,13 @@ class Employee extends Model
     {
         return Attribute::make(
             get: fn () => "{$this->first_name} {$this->last_name}",
+        );
+    }
+
+    protected function rating(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->ratings()->count() ? $this->ratings()->sum('score') / $this->ratings()->count() : 0,
         );
     }
 

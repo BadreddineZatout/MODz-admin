@@ -14,6 +14,7 @@
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "mokhosh/filament-rating": "^1.1",
         "z3d0x/filament-logger": "^0.7.1"
     },
     "require-dev": {

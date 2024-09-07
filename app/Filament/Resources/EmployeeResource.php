@@ -7,6 +7,7 @@ use App\Filament\Resources\EmployeeResource\RelationManagers\CategoriesRelationM
 use App\Filament\Resources\EmployeeResource\RelationManagers\OffersRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\EmployeeResource\RelationManagers\ProblemsRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\RatingsRelationManager;
 use App\Models\Employee;
 use Closure;
 use Filament\Forms;
@@ -22,6 +23,8 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
+use Mokhosh\FilamentRating\Columns\RatingColumn;
+use Mokhosh\FilamentRating\Entries\RatingEntry;
 
 class EmployeeResource extends Resource
 {
@@ -113,6 +116,9 @@ class EmployeeResource extends Resource
                 Tables\Columns\IconColumn::make('can_work_construction')
                     ->toggleable()
                     ->boolean(),
+                RatingColumn::make('rating')
+                    ->stars(5)
+                    ->color('warning'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -191,6 +197,9 @@ class EmployeeResource extends Resource
                     'VALID' => 'success',
                     'REFUSED' => 'danger',
                 }),
+            RatingEntry::make('rating')
+                ->stars(5)
+                ->color('warning'),
             Infolists\Components\Section::make('Selfie Image')
                 ->schema([
                     Infolists\Components\ImageEntry::make('Selfie')
@@ -233,6 +242,7 @@ class EmployeeResource extends Resource
             OffersRelationManager::class,
             OrdersRelationManager::class,
             CategoriesRelationManager::class,
+            RatingsRelationManager::class,
             ProblemsRelationManager::class,
         ];
     }
