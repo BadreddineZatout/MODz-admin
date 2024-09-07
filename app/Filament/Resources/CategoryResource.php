@@ -38,9 +38,15 @@ class CategoryResource extends Resource
                 Forms\Components\Toggle::make('urgent'),
                 Forms\Components\Toggle::make('for_construction'),
                 SpatieMediaLibraryFileUpload::make('image')
-                    ->multiple()
                     ->disk(env('STORAGE_DISK'))
                     ->preserveFilenames()
+                    ->rules(['image', 'mimes:jpeg,png,jpg']),
+                SpatieMediaLibraryFileUpload::make('slider')
+                    ->multiple()
+                    ->disk(env('STORAGE_DISK'))
+                    ->collection('slider')
+                    ->preserveFilenames()
+                    ->panelLayout('grid')
                     ->rules(['image', 'mimes:jpeg,png,jpg']),
             ]);
     }
