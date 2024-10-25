@@ -2,18 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\AdResource\Pages;
 use App\Models\Ad;
 use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Filters\TernaryFilter;
-use App\Filament\Resources\AdResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\AdResource\RelationManagers;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Table;
 
 class AdResource extends Resource
 {
@@ -30,13 +27,17 @@ class AdResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\Toggle::make('is_shown')
-                    ->label('Visible')
-                    ->default(true),
+                Forms\Components\TextInput::make('url')
+                    ->required()
+                    ->url()
+                    ->prefixIcon('heroicon-m-globe-alt'),
                 SpatieMediaLibraryFileUpload::make('media')
                     ->disk(env('STORAGE_DISK'))
                     ->preserveFilenames()
                     ->rules(['image', 'mimes:jpeg,png,jpg']),
+                Forms\Components\Toggle::make('is_shown')
+                    ->label('Visible')
+                    ->default(true),
             ]);
     }
 
@@ -50,7 +51,7 @@ class AdResource extends Resource
             ])
             ->filters([
                 TernaryFilter::make('is_shown')
-                    ->label('Visible')
+                    ->label('Visible'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
