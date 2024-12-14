@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Construction extends Model
 {
-    protected $fillable = ['client_id', 'construction_type', 'description', 'date', 'hour', 'status', 'accepted_at', 'type', 'state_id', 'province_id'];
+    protected $fillable = ['client_id', 'construction_type', 'description', 'date', 'hour', 'status', 'accepted_at', 'type', 'latitude', 'longitude'];
 
     public $timestamps = false;
 
@@ -35,16 +35,6 @@ class Construction extends Model
     public function employees(): BelongsToMany
     {
         return $this->belongsToMany(Employee::class, '_construction_employee', 'A', 'B');
-    }
-
-    public function state(): BelongsTo
-    {
-        return $this->belongsTo(State::class);
-    }
-
-    public function province(): BelongsTo
-    {
-        return $this->belongsTo(Province::class);
     }
 
     public function assignedCategories(): array

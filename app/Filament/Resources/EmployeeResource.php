@@ -103,8 +103,8 @@ class EmployeeResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('national_id')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('state.name'),
-                Tables\Columns\TextColumn::make('province.name'),
+                Tables\Columns\TextColumn::make('latitude'),
+                Tables\Columns\TextColumn::make('longitude'),
                 Tables\Columns\TextColumn::make('categories.profession')
                     ->label('Profession'),
                 Tables\Columns\TextColumn::make('type'),
@@ -128,10 +128,6 @@ class EmployeeResource extends Resource
                     }),
             ])
             ->filters([
-                SelectFilter::make('state')
-                    ->relationship('state', 'name')
-                    ->preload()
-                    ->searchable(),
                 SelectFilter::make('category')
                     ->relationship('categories', 'profession')
                     ->multiple(),

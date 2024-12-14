@@ -9,7 +9,6 @@ use App\Models\Construction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -54,14 +53,12 @@ class ConstructionResource extends Resource
                     ->preload()
                     ->multiple()
                     ->required(),
-                Forms\Components\Select::make('state_id')
-                    ->relationship('state', 'name')
-                    ->preload()
-                    ->live()
-                    ->required(),
-                Forms\Components\Select::make('province_id')
-                    ->relationship('province', 'name', fn (Get $get, $query) => $query->where('state_id', $get('state_id')))
-                    ->required(),
+                Forms\Components\TextInput::make('latitude')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('longitude')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\DatePicker::make('date')
                     ->required(),
                 Forms\Components\TextInput::make('hour')
@@ -103,10 +100,8 @@ class ConstructionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('categories.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('state.name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('province.name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('latitude'),
+                Tables\Columns\TextColumn::make('lobgitude'),
                 Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
@@ -171,9 +166,9 @@ class ConstructionResource extends Resource
                 ->date('d-m-Y'),
             Infolists\Components\TextEntry::make('hour'),
             Infolists\Components\TextEntry::make('categories.name'),
-            Infolists\Components\TextEntry::make('state.name'),
-            Infolists\Components\TextEntry::make('province.name'),
             Infolists\Components\TextEntry::make('type'),
+            Infolists\Components\TextEntry::make('latitude'),
+            Infolists\Components\TextEntry::make('longitude'),
             Infolists\Components\TextEntry::make('status')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {

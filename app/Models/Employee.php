@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'state_id', 'province_id', 'is_active', 'status', 'can_work_construction', 'type'];
+    protected $fillable = ['first_name', 'last_name', 'phone', 'national_id', 'latitude', 'longitude', 'is_active', 'status', 'can_work_construction', 'type'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -28,16 +28,6 @@ class Employee extends Model
     public function profile(): HasOne
     {
         return $this->hasOne(ProfileUser::class);
-    }
-
-    public function state()
-    {
-        return $this->belongsTo(State::class);
-    }
-
-    public function province()
-    {
-        return $this->belongsTo(Province::class);
     }
 
     public function categories()
