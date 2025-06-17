@@ -50,6 +50,7 @@ class ClientResource extends Resource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(191),
             ]);

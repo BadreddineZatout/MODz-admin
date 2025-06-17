@@ -57,9 +57,11 @@ class EmployeeResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('phone')
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->tel(),
                 Forms\Components\TextInput::make('national_id')
+                    ->unique(ignoreRecord: true)
                     ->required(),
                 Forms\Components\Select::make('categories')
                     ->relationship('categories', 'name')
