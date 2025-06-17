@@ -25,6 +25,13 @@ class ViewClient extends ViewRecord
     {
         return [
             Action::make('Validate Client')
+                ->label(function () {
+                    if ($this->record->status == 'PENDING') {
+                        return 'Validate';
+                    }
+
+                    return 'Unblock';
+                })
                 ->color('success')
                 ->icon('heroicon-o-check-circle')
                 ->hidden(fn () => $this->record->status == 'VALID')
@@ -33,12 +40,19 @@ class ViewClient extends ViewRecord
                     $this->record->save();
 
                     return Notification::make()
-                        ->title('Client is Validated')
+                        ->title(fn () => $this->record->status == 'PENDING' ? 'Client is Validated' : 'Client is Unblocked')
                         ->success()
                         ->send();
                 })
                 ->requiresConfirmation(),
             Action::make('Refuse Client')
+                ->label(function () {
+                    if ($this->record->status == 'PENDING') {
+                        return 'Refuse';
+                    }
+
+                    return 'Block';
+                })
                 ->color('danger')
                 ->icon('heroicon-m-x-circle')
                 ->hidden(fn () => $this->record->status == 'REFUSED')
@@ -47,7 +61,7 @@ class ViewClient extends ViewRecord
                     $this->record->save();
 
                     return Notification::make()
-                        ->title('Client is Refused')
+                        ->title(fn () => $this->record->status == 'PENDING' ? 'Client is Refused' : 'Client is Blocked')
                         ->danger()
                         ->send();
                 })

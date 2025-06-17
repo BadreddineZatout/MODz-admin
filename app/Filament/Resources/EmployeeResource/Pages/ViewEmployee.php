@@ -27,6 +27,13 @@ class ViewEmployee extends ViewRecord
     {
         return [
             Action::make('Validate Employee')
+                ->label(function () {
+                    if ($this->record->status == 'PENDING') {
+                        return 'Validate';
+                    }
+
+                    return 'Unblock';
+                })
                 ->color('success')
                 ->icon('heroicon-o-check-circle')
                 ->hidden(fn () => $this->record->status == 'VALID')
@@ -35,12 +42,19 @@ class ViewEmployee extends ViewRecord
                     $this->record->save();
 
                     return Notification::make()
-                        ->title('Employee is Validated')
+                        ->title(fn () => $this->record->status == 'PENDING' ? 'Employee is Validated' : 'Employee is Unblocked')
                         ->success()
                         ->send();
                 })
                 ->requiresConfirmation(),
             Action::make('Refuse Employee')
+                ->label(function () {
+                    if ($this->record->status == 'PENDING') {
+                        return 'Refuse';
+                    }
+
+                    return 'Block';
+                })
                 ->color('danger')
                 ->icon('heroicon-m-x-circle')
                 ->hidden(fn () => $this->record->status == 'REFUSED')
@@ -49,7 +63,7 @@ class ViewEmployee extends ViewRecord
                     $this->record->save();
 
                     return Notification::make()
-                        ->title('Employee is Refused')
+                        ->title(fn () => $this->record->status == 'PENDING' ? 'Employee is Refused' : 'Employee is Blocked')
                         ->danger()
                         ->send();
                 })
