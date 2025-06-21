@@ -64,6 +64,7 @@ class CategoryResource extends Resource
             ])
             ->filters([
                 TernaryFilter::make('urgent'),
+                TernaryFilter::make('for_construction'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
