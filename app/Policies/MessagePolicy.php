@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Provider;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ProviderPolicy
+class MessagePolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class ProviderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_provider');
+        return $user->can('view_any_message');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Provider $provider): bool
+    public function view(User $user, Message $message): bool
     {
-        return $user->can('view_provider');
+        return $user->can('view_message');
     }
 
     /**
@@ -31,23 +31,23 @@ class ProviderPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_provider');
+        return $user->can('create_message');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Provider $provider): bool
+    public function update(User $user, Message $message): bool
     {
-        return $user->can('update_provider');
+        return $user->can('update_message');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Provider $provider): bool
+    public function delete(User $user, Message $message): bool
     {
-        return $user->can('delete_provider');
+        return $user->can('delete_message');
     }
 
     /**
@@ -55,13 +55,13 @@ class ProviderPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_provider');
+        return $user->can('delete_any_message');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Provider $provider): bool
+    public function forceDelete(User $user, Message $message): bool
     {
         return $user->can('{{ ForceDelete }}');
     }
@@ -77,7 +77,7 @@ class ProviderPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Provider $provider): bool
+    public function restore(User $user, Message $message): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -93,7 +93,7 @@ class ProviderPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Provider $provider): bool
+    public function replicate(User $user, Message $message): bool
     {
         return $user->can('{{ Replicate }}');
     }
