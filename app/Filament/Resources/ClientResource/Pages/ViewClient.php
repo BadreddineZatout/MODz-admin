@@ -25,43 +25,31 @@ class ViewClient extends ViewRecord
     {
         return [
             Action::make('Validate Client')
-                ->label(function () {
-                    if ($this->record->status == 'PENDING') {
-                        return 'Validate';
-                    }
-
-                    return 'Unblock';
-                })
+                ->label('Unban')
                 ->color('success')
                 ->icon('heroicon-o-check-circle')
-                ->hidden(fn () => $this->record->status == 'VALID')
+                ->visible(fn () => $this->record->status == 'REFUSED')
                 ->action(function () {
                     $this->record->status = 'VALID';
                     $this->record->save();
 
                     return Notification::make()
-                        ->title(fn () => $this->record->status == 'PENDING' ? 'Client is Validated' : 'Client is Unblocked')
+                        ->title( 'Client is Unbanned')
                         ->success()
                         ->send();
                 })
                 ->requiresConfirmation(),
             Action::make('Refuse Client')
-                ->label(function () {
-                    if ($this->record->status == 'PENDING') {
-                        return 'Refuse';
-                    }
-
-                    return 'Block';
-                })
+                ->label('Ban')
                 ->color('danger')
                 ->icon('heroicon-m-x-circle')
-                ->hidden(fn () => $this->record->status == 'REFUSED')
+                ->visible(fn () => $this->record->status != 'REFUSED')
                 ->action(function () {
                     $this->record->status = 'REFUSED';
                     $this->record->save();
 
                     return Notification::make()
-                        ->title(fn () => $this->record->status == 'PENDING' ? 'Client is Refused' : 'Client is Blocked')
+                        ->title( 'Client is Banned')
                         ->danger()
                         ->send();
                 })

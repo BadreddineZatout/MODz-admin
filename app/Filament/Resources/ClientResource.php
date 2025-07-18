@@ -71,6 +71,10 @@ class ClientResource extends Resource
                     ->label('Email'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'VALID' => 'Active',
+                        'REFUSED' => 'Banned',
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'PENDING' => 'gray',
                         'VALID' => 'success',
@@ -80,9 +84,8 @@ class ClientResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                     ->options([
-                        'PENDING' => 'Pending',
-                        'VALID' => 'Valid',
-                        'REFUSED' => 'Refused',
+                        'VALID' => 'Active',
+                        'REFUSED' => 'Banned',
                     ]),
             ])
             ->actions([
@@ -111,6 +114,10 @@ class ClientResource extends Resource
                 ->copyMessageDuration(1500),
             Infolists\Components\TextEntry::make('status')
                 ->badge()
+                ->formatStateUsing(fn(string $state): string => match ($state) {
+                    'VALID' => 'Active',
+                    'REFUSED' => 'Banned',
+                })
                 ->color(fn (string $state): string => match ($state) {
                     'PENDING' => 'gray',
                     'VALID' => 'success',
