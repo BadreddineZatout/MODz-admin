@@ -34,7 +34,7 @@ class ViewClient extends ViewRecord
                     $this->record->save();
 
                     return Notification::make()
-                        ->title( 'Client is Unbanned')
+                        ->title('Client is Unbanned')
                         ->success()
                         ->send();
                 })
@@ -49,7 +49,7 @@ class ViewClient extends ViewRecord
                     $this->record->save();
 
                     return Notification::make()
-                        ->title( 'Client is Banned')
+                        ->title('Client is Banned')
                         ->danger()
                         ->send();
                 })

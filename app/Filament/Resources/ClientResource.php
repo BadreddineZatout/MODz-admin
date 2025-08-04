@@ -71,7 +71,7 @@ class ClientResource extends Resource
                     ->label('Email'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'VALID' => 'Active',
                         'REFUSED' => 'Banned',
                     })
@@ -114,7 +114,7 @@ class ClientResource extends Resource
                 ->copyMessageDuration(1500),
             Infolists\Components\TextEntry::make('status')
                 ->badge()
-                ->formatStateUsing(fn(string $state): string => match ($state) {
+                ->formatStateUsing(fn (string $state): string => match ($state) {
                     'VALID' => 'Active',
                     'REFUSED' => 'Banned',
                 })
