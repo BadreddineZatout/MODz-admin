@@ -67,6 +67,9 @@ class ClientResource extends Resource
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('profile.user.email')
+                    ->label('Email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('profile.user.email')
                     ->searchable()
                     ->label('Email'),
                 Tables\Columns\TextColumn::make('status')
@@ -105,6 +108,11 @@ class ClientResource extends Resource
             Infolists\Components\TextEntry::make('first_name'),
             Infolists\Components\TextEntry::make('last_name'),
             Infolists\Components\TextEntry::make('phone')
+                ->copyable()
+                ->copyMessage('Copied!')
+                ->copyMessageDuration(1500),
+            Infolists\Components\TextEntry::make('profile.user.email')
+                ->label('Email')
                 ->copyable()
                 ->copyMessage('Copied!')
                 ->copyMessageDuration(1500),

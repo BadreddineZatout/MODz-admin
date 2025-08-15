@@ -103,6 +103,9 @@ class EmployeeResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('profile.user.email')
+                    ->label('Email')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('national_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('latitude'),
@@ -166,6 +169,11 @@ class EmployeeResource extends Resource
             Infolists\Components\TextEntry::make('first_name'),
             Infolists\Components\TextEntry::make('last_name'),
             Infolists\Components\TextEntry::make('phone')
+                ->copyable()
+                ->copyMessage('Copied!')
+                ->copyMessageDuration(1500),
+            Infolists\Components\TextEntry::make('profile.user.email')
+                ->label('Email')
                 ->copyable()
                 ->copyMessage('Copied!')
                 ->copyMessageDuration(1500),
