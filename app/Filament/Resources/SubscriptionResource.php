@@ -85,7 +85,7 @@ class SubscriptionResource extends Resource
             ->filters([
                 SelectFilter::make('user_id')
                     ->relationship('user', 'email', function ($query) {
-                        return $query->has('profile')->where('current_role', 'EMPLOYEE');
+                        return $query->has('profile.employee')->where('current_role', 'EMPLOYEE');
                     })
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->profile->employee->name)
                     ->label('User'),
