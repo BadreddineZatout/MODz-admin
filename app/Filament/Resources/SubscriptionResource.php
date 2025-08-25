@@ -141,7 +141,7 @@ class SubscriptionResource extends Resource
                             $record->status = 'ACTIVE';
                             $record->starts_at = now();
                             if ($record->pack->duration) {
-                                $record->ends_at = now()->addMonths($record->pack->duration);
+                                $record->ends_at = now()->addMonths((float) $record->pack->duration);
                             }
                             $record->save();
 
@@ -154,7 +154,7 @@ class SubscriptionResource extends Resource
                     Action::make('Cancel')
                         ->color('danger')
                         ->icon('heroicon-o-x-circle')
-                        ->visible(fn ($record) => $record->status != 'CANCELLED' || $record->status != 'EXPIRED')
+                        ->visible(fn ($record) => $record->status != 'CANCELLED' && $record->status != 'EXPIRED')
                         ->action(function ($record) {
                             $record->status = 'CANCELLED';
                             $record->save();
