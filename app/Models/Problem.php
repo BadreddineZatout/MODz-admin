@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Problem extends Model
 {
-    protected $fillable = ['client_id', 'employee_id', 'report_date', 'order_id', 'construction_id', 'description', 'reporter', 'is_treated'];
+    protected $fillable = ['client_id', 'employee_id', 'report_date', 'order_id', 'construction_id', 'description', 'reporter', 'is_treated', 'tag'];
 
     /**
      * Indicates if the model should be timestamped.

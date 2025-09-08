@@ -4,9 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProblemResource\Pages;
 use App\Models\Problem;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
@@ -42,13 +44,13 @@ class ProblemResource extends Resource
                     ->preload()
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
                     ->searchable(['first_name', 'last_name'])
-                    ->required(),
+                    ->requiredWithout('employee_id'),
                 Forms\Components\Select::make('employee_id')
                     ->relationship('employee', 'id')
                     ->preload()
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
                     ->searchable(['first_name', 'last_name'])
-                    ->required(),
+                    ->requiredWithout('client_id'),
                 Forms\Components\DatePicker::make('report_date')
                     ->required(),
                 Forms\Components\Select::make('order_id')
@@ -57,10 +59,11 @@ class ProblemResource extends Resource
                 Forms\Components\Select::make('construction_id')
                     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->client->name} {$record->date}")
                     ->relationship('construction', 'id'),
+                Forms\Components\TextInput::make('tag'),
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\SELECT::make('reporter')
+                Forms\Components\Select::make('reporter')
                     ->options([
                         'CLIENT' => 'CLIENT',
                         'EMPLOYEE' => 'EMPLOYEE',
@@ -78,9 +81,9 @@ class ProblemResource extends Resource
                     ->label('#')
                     ->numeric(),
                 Tables\Columns\TextColumn::make('client.name')
-                    ->sortable(),
+                    ->default('---'),
                 Tables\Columns\TextColumn::make('employee.name')
-                    ->sortable(),
+                    ->default('---'),
                 Tables\Columns\TextColumn::make('report_date')
                     ->date('Y-m-d')
                     ->sortable(),
