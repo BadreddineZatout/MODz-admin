@@ -13,6 +13,7 @@ class Order extends Model
 
     protected $casts = [
         'is_urgent' => 'boolean',
+        'date' => 'datetime',
         'accepted_at' => 'date:Y-m-d',
     ];
 

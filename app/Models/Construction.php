@@ -13,7 +13,7 @@ class Construction extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'date' => 'date:Y-m-d',
+        'date' => 'datetime',
         'accepted_at' => 'date:Y-m-d',
     ];
 

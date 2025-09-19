@@ -2,20 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProblemResource\Pages;
-use App\Models\Problem;
 use Closure;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
+use App\Models\Problem;
+use Filament\Forms\Get;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ProblemResource\Pages;
 
 class ProblemResource extends Resource
 {
@@ -54,12 +55,13 @@ class ProblemResource extends Resource
                 Forms\Components\DatePicker::make('report_date')
                     ->required(),
                 Forms\Components\Select::make('order_id')
-                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->category->name} {$record->date}")
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->category->name} " . $record->date->format('Y-m-d'))
                     ->relationship('order', 'id'),
                 Forms\Components\Select::make('construction_id')
-                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->client->name} {$record->date}")
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->client->name} " . $record->date->format('Y-m-d'))
                     ->relationship('construction', 'id'),
-                Forms\Components\TextInput::make('tag'),
+                Forms\Components\TextInput::make('tag')
+                ->formatStateUsing(fn($state) => Str::of($state)->replace('_', ' ')->title()),
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
